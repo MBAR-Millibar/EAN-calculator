@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180" fill="none">
+  <!-- Background with rounded corners for iOS -->
+  <rect width="180" height="180" rx="32" ry="32" fill="#111729"/>
+  
+  <!-- Calculator icon centered and scaled -->
+  <g transform="translate(45, 45)">
+    <rect width="90" height="112.5" x="22.5" y="11.25" rx="11.25" ry="11.25" fill="none" stroke="#2563eb" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="45" x2="90" y1="33.75" y2="33.75" stroke="#2563eb" stroke-width="4.5" stroke-linecap="round"/>
+    <line x1="45" x2="90" y1="56.25" y2="56.25" stroke="#2563eb" stroke-width="4.5" stroke-linecap="round"/>
+    <line x1="45" x2="90" y1="78.75" y2="78.75" stroke="#2563eb" stroke-width="4.5" stroke-linecap="round"/>
+    <line x1="45" x2="90" y1="101.25" y2="101.25" stroke="#2563eb" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+</svg>
