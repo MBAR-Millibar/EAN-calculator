@@ -115,7 +115,7 @@ export default function NitroxCalculator() {
         </Alert>
         <div className="flex flex-col items-center justify-center">
           <p className="mt-4 text-gray-200">
-          <a href="https://app.millibar.io/terms">Terms</a> | <a href="https://app.millibar.io/privacy">Privacy</a> | <a href="https://app.millibar.io/security">Security</a> | <a href="https://app.millibar.io/imprint">Imprint</a> </p>
+          <a href="https://app.millibar.io/">Home</a> |<a href="https://app.millibar.io/terms">Terms</a> | <a href="https://app.millibar.io/privacy">Privacy</a> | <a href="https://app.millibar.io/security">Security</a> | <a href="https://app.millibar.io/imprint">Imprint</a> </p>
           <p className="mt-4 text-gray-200">{new Date().getFullYear()} © Millibar - All Rights Reserved</p>
         </div>
       </div>
