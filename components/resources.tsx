@@ -1,19 +1,46 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { BookOpen, AlertTriangle, Calculator, Waves } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { BookOpen, AlertTriangle, Calculator, Waves } from "lucide-react";
 
 export function Resources() {
   const terminology = [
-    { term: "MOD", definition: "Maximum Operating Depth - The deepest depth at which a gas mix can be safely used" },
+    {
+      term: "MOD",
+      definition:
+        "Maximum Operating Depth - The deepest depth at which a gas mix can be safely used",
+      color: "bg-blue-900/50 text-blue-300 border-blue-400/50",
+    },
     {
       term: "EAD",
-      definition: "Equivalent Air Depth - The depth of air that would have the same nitrogen partial pressure",
+      definition:
+        "Equivalent Air Depth - The depth of air that would have the same nitrogen partial pressure",
+      color: "bg-purple-900/50 text-purple-300 border-purple-400/50",
     },
-    { term: "PO₂", definition: "Partial Pressure of Oxygen - The pressure exerted by oxygen in a gas mixture" },
-    { term: "EAN", definition: "Enriched Air Nitrox - Air with higher oxygen content than normal air (21%)" },
-    { term: "CNS", definition: "Central Nervous System oxygen toxicity - Risk from high oxygen partial pressures" },
-    { term: "OTU", definition: "Oxygen Tolerance Unit - Measure of pulmonary oxygen toxicity exposure" },
-  ]
+    {
+      term: "PO₂",
+      definition:
+        "Partial Pressure of Oxygen - The pressure exerted by oxygen in a gas mixture",
+      color: "bg-orange-900/50 text-orange-300 border-orange-400/50",
+    },
+    {
+      term: "EAN",
+      definition:
+        "Enriched Air Nitrox - Air with higher oxygen content than normal air (21%)",
+      color: "bg-green-900/50 text-green-300 border-green-400/50",
+    },
+    {
+      term: "CNS",
+      definition:
+        "Central Nervous System oxygen toxicity - Risk from high oxygen partial pressures",
+      color: "bg-red-900/50 text-red-300 border-red-400/50",
+    },
+    {
+      term: "OTU",
+      definition:
+        "Oxygen Tolerance Unit - Measure of pulmonary oxygen toxicity exposure",
+      color: "bg-amber-900/50 text-amber-300 border-amber-400/50",
+    },
+  ];
 
   const safetyGuidelines = [
     "Always analyze your gas mix before diving",
@@ -22,14 +49,32 @@ export function Resources() {
     "Plan contingency depths and gas switches",
     "Carry appropriate emergency procedures",
     "Maintain proper certification and training",
-  ]
+  ];
 
   const commonMixes = [
-    { name: "EAN32", oxygen: 32, nitrogen: 68, mod_14: "33.8m", mod_16: "40.0m" },
-    { name: "EAN36", oxygen: 36, nitrogen: 64, mod_14: "28.9m", mod_16: "34.4m" },
-    { name: "EAN40", oxygen: 40, nitrogen: 60, mod_14: "25.0m", mod_16: "30.0m" },
+    {
+      name: "EAN32",
+      oxygen: 32,
+      nitrogen: 68,
+      mod_14: "33.8m",
+      mod_16: "40.0m",
+    },
+    {
+      name: "EAN36",
+      oxygen: 36,
+      nitrogen: 64,
+      mod_14: "28.9m",
+      mod_16: "34.4m",
+    },
+    {
+      name: "EAN40",
+      oxygen: 40,
+      nitrogen: 60,
+      mod_14: "25.0m",
+      mod_16: "30.0m",
+    },
     { name: "Air", oxygen: 21, nitrogen: 79, mod_14: "56.7m", mod_16: "66.2m" },
-  ]
+  ];
 
   return (
     <div className="space-y-6">
@@ -43,9 +88,15 @@ export function Resources() {
           </CardHeader>
           <CardContent className="space-y-4">
             {terminology.map((item, index) => (
-              <div key={index} className="border-b border-white/10 pb-2 last:border-b-0">
+              <div
+                key={index}
+                className="border-b border-white/10 pb-2 last:border-b-0"
+              >
                 <div className="flex items-start gap-2">
-                  <Badge variant="outline" className="font-mono text-xs">
+                  <Badge
+                    variant="outline"
+                    className={`font-mono text-xs ${item.color}`}
+                  >
                     {item.term}
                   </Badge>
                 </div>
@@ -63,10 +114,10 @@ export function Resources() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ul className="space-y-2">
+            <ul className="space-y-3">
               {safetyGuidelines.map((guideline, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm">
-                  <div className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0" />
+                <li key={index} className="flex items-start gap-3 text-base">
+                  <div className="w-2 h-2 bg-red-500 rounded-full mt-2.5 flex-shrink-0" />
                   {guideline}
                 </li>
               ))}
@@ -119,13 +170,15 @@ export function Resources() {
         </CardHeader>
         <CardContent className="text-blue-200">
           <p className="text-sm leading-relaxed">
-            This calculator is provided for educational purposes and as a planning tool for certified Nitrox divers. All
-            calculations should be verified independently using certified dive tables or dive computers. The user
-            assumes all responsibility for the safe planning and execution of their dives. Always dive within your
-            certification limits and follow established safety protocols.
+            This calculator is provided for educational purposes and as a
+            planning tool for certified Nitrox divers. All calculations should
+            be verified independently using certified dive tables or dive
+            computers. The user assumes all responsibility for the safe planning
+            and execution of their dives. Always dive within your certification
+            limits and follow established safety protocols.
           </p>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

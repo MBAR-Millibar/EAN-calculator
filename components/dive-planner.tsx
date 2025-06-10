@@ -1,44 +1,45 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Calculator, AlertTriangle } from "lucide-react"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Calculator, AlertTriangle } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface DivePlan {
-  mod: number
-  ead: number
-  bestMix: number
-  oxygenToxicity: string
+  mod: number;
+  ead: number;
+  bestMix: number;
+  oxygenToxicity: string;
 }
 
 export function DivePlanner() {
-  const [plannedDepth, setPlannedDepth] = useState<number>(25)
-  const [oxygenPercentage, setOxygenPercentage] = useState<number>(32)
-  const [maxPO2, setMaxPO2] = useState<number>(1.4)
-  const [result, setResult] = useState<DivePlan | null>(null)
+  const [plannedDepth, setPlannedDepth] = useState<number>(25);
+  const [oxygenPercentage, setOxygenPercentage] = useState<number>(32);
+  const [maxPO2, setMaxPO2] = useState<number>(1.4);
+  const [result, setResult] = useState<DivePlan | null>(null);
 
   const calculateDivePlan = () => {
     // MOD calculation
-    const mod = (maxPO2 / (oxygenPercentage / 100) - 1) * 10
+    const mod = (maxPO2 / (oxygenPercentage / 100) - 1) * 10;
 
     // EAD calculation
-    const ead = ((1 - oxygenPercentage / 100) / 0.79) * (plannedDepth + 10) - 10
+    const ead =
+      ((1 - oxygenPercentage / 100) / 0.79) * (plannedDepth + 10) - 10;
 
     // Best Mix calculation
-    const bestMix = (maxPO2 / (plannedDepth / 10 + 1)) * 100
+    const bestMix = (maxPO2 / (plannedDepth / 10 + 1)) * 100;
 
     // Oxygen toxicity assessment
-    let oxygenToxicity = "Safe"
-    const currentPO2 = (oxygenPercentage / 100) * (plannedDepth / 10 + 1)
+    let oxygenToxicity = "Safe";
+    const currentPO2 = (oxygenPercentage / 100) * (plannedDepth / 10 + 1);
 
     if (currentPO2 > 1.6) {
-      oxygenToxicity = "Dangerous - Exceeds 1.6 bar"
+      oxygenToxicity = `Dangerous - ${currentPO2.toFixed(2)} bar PO₂`;
     } else if (currentPO2 > 1.4) {
-      oxygenToxicity = "Caution - Exceeds recreational limit"
+      oxygenToxicity = "Caution - Exceeds recreational limit";
     }
 
     setResult({
@@ -46,20 +47,20 @@ export function DivePlanner() {
       ead: Math.round(ead * 10) / 10,
       bestMix: Math.round(bestMix * 10) / 10,
       oxygenToxicity,
-    })
-  }
+    });
+  };
 
   // Calculate automatically when inputs change
   useEffect(() => {
-    calculateDivePlan()
-  }, [plannedDepth, oxygenPercentage, maxPO2])
+    calculateDivePlan();
+  }, [plannedDepth, oxygenPercentage, maxPO2]);
 
   const reset = () => {
-    setPlannedDepth(25)
-    setOxygenPercentage(32)
-    setMaxPO2(1.4)
-    setResult(null)
-  }
+    setPlannedDepth(25);
+    setOxygenPercentage(32);
+    setMaxPO2(1.4);
+    setResult(null);
+  };
 
   return (
     <div className="space-y-6">
@@ -100,9 +101,12 @@ export function DivePlanner() {
             id="max-po2"
             type="number"
             value={maxPO2}
-            onChange={(e) => setMaxPO2(Number(e.target.value))}
+            onChange={(e) => {
+              const value = Number(e.target.value);
+              setMaxPO2(Math.min(value, 1.8));
+            }}
             min="0.1"
-            max="2.0"
+            max="1.8"
             step="0.1"
           />
         </div>
@@ -122,52 +126,72 @@ export function DivePlanner() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card className="bg-white/10 backdrop-blur-sm border-white/20 flex flex-col">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-gray-200">Maximum Operating Depth</CardTitle>
+              <CardTitle className="text-sm text-gray-200">
+                Maximum Operating Depth
+              </CardTitle>
             </CardHeader>
             <CardContent className="flex-1 flex items-center justify-center">
               <div className="text-center">
-                <div className="text-4xl font-bold text-blue-300">{result.mod} m</div>
-                <div className="text-xs text-gray-400">({Math.round(result.mod * 3.28)} ft)</div>
+                <div className="text-4xl font-bold text-blue-300">
+                  {result.mod} m
+                </div>
+                <div className="text-sm text-gray-400">
+                  ({Math.round(result.mod * 3.28)} ft)
+                </div>
               </div>
             </CardContent>
           </Card>
 
           <Card className="bg-white/10 backdrop-blur-sm border-white/20 flex flex-col">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-gray-200">Equivalent Air Depth</CardTitle>
+              <CardTitle className="text-sm text-gray-200">
+                Equivalent Air Depth
+              </CardTitle>
             </CardHeader>
             <CardContent className="flex-1 flex items-center justify-center">
               <div className="text-center">
-                <div className="text-4xl font-bold text-purple-300">{result.ead} m</div>
-                <div className="text-xs text-gray-400">({Math.round(result.ead * 3.28)} ft)</div>
+                <div className="text-4xl font-bold text-purple-300">
+                  {result.ead} m
+                </div>
+                <div className="text-sm text-gray-400">
+                  ({Math.round(result.ead * 3.28)} ft)
+                </div>
               </div>
             </CardContent>
           </Card>
 
           <Card className="bg-white/10 backdrop-blur-sm border-white/20 flex flex-col">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-gray-200">Optimal Mix for Depth</CardTitle>
+              <CardTitle className="text-sm text-gray-200">
+                Optimal Mix for Depth
+              </CardTitle>
             </CardHeader>
             <CardContent className="flex-1 flex items-center justify-center">
               <div className="text-center">
-                <div className="text-4xl font-bold text-green-300">{result.bestMix}%</div>
-                <div className="text-xs text-gray-400">EAN{Math.round(result.bestMix)}</div>
+                <div className="text-4xl font-bold text-green-300">
+                  {result.bestMix}%
+                </div>
+                <div className="text-sm text-gray-400">
+                  EAN{Math.round(result.bestMix)}
+                </div>
               </div>
             </CardContent>
           </Card>
 
           <Card className="bg-white/10 backdrop-blur-sm border-white/20 flex flex-col">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-gray-200">Oxygen Toxicity</CardTitle>
+              <CardTitle className="text-sm text-gray-200">
+                Oxygen Toxicity
+              </CardTitle>
             </CardHeader>
             <CardContent className="flex-1 flex items-center justify-center">
               <div
-                className={`text-xl font-semibold ${
+                className={`text-4xl font-semibold ${
                   result.oxygenToxicity === "Safe"
                     ? "text-green-600"
                     : result.oxygenToxicity.includes("Caution")
-                      ? "text-yellow-600"
-                      : "text-red-600"
+                    ? "text-yellow-600"
+                    : "text-red-600"
                 }`}
               >
                 {result.oxygenToxicity}
@@ -181,11 +205,12 @@ export function DivePlanner() {
         <Alert className="border-red-400 bg-red-900/20">
           <AlertTriangle className="h-4 w-4 text-red-400" />
           <AlertDescription className="text-red-200">
-            <strong>Warning:</strong> Current gas mix and depth combination may pose oxygen toxicity risks. Review your
-            dive plan and consider using a different mix or reducing maximum depth.
+            <strong>Warning:</strong> Current gas mix and depth combination may
+            pose oxygen toxicity risks. Review your dive plan and consider using
+            a different mix or reducing maximum depth.
           </AlertDescription>
         </Alert>
       )}
     </div>
-  )
+  );
 }

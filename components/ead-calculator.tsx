@@ -1,33 +1,33 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent } from "@/components/ui/card"
-import { Calculator } from "lucide-react"
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
+import { Calculator } from "lucide-react";
 
 export function EADCalculator() {
-  const [actualDepth, setActualDepth] = useState<number>(30)
-  const [oxygenPercentage, setOxygenPercentage] = useState<number>(32)
-  const [result, setResult] = useState<number | null>(null)
+  const [actualDepth, setActualDepth] = useState<number>(30);
+  const [oxygenPercentage, setOxygenPercentage] = useState<number>(32);
+  const [result, setResult] = useState<number | null>(null);
 
   const calculateEAD = () => {
     // EAD = ((1 - (O2% / 100)) / 0.79) * (Actual Depth + 10) - 10
-    const ead = ((1 - oxygenPercentage / 100) / 0.79) * (actualDepth + 10) - 10
-    setResult(Math.round(ead * 10) / 10)
-  }
+    const ead = ((1 - oxygenPercentage / 100) / 0.79) * (actualDepth + 10) - 10;
+    setResult(Math.round(ead * 10) / 10);
+  };
 
   // Calculate automatically when inputs change
   useEffect(() => {
-    calculateEAD()
-  }, [actualDepth, oxygenPercentage])
+    calculateEAD();
+  }, [actualDepth, oxygenPercentage]);
 
   const reset = () => {
-    setActualDepth(30)
-    setOxygenPercentage(32)
-    setResult(null)
-  }
+    setActualDepth(30);
+    setOxygenPercentage(32);
+    setResult(null);
+  };
 
   return (
     <div className="space-y-6">
@@ -76,9 +76,15 @@ export function EADCalculator() {
           <Card className="bg-purple-900/30 border-purple-400/50 flex items-center justify-center">
             <CardContent className="pt-6">
               <div className="text-center">
-                <div className="text-5xl font-bold text-purple-300 mb-2">{result} m</div>
-                <div className="text-base text-purple-200">Equivalent Air Depth</div>
-                <div className="text-xs text-purple-600 mt-2">({Math.round(result * 3.28)} ft)</div>
+                <div className="text-5xl font-bold text-purple-300 mb-2">
+                  {result} m
+                </div>
+                <div className="text-base text-purple-200">
+                  Equivalent Air Depth
+                </div>
+                <div className="text-sm text-purple-600 mt-2">
+                  ({Math.round(result * 3.28)} ft)
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -89,10 +95,10 @@ export function EADCalculator() {
         <h4 className="font-semibold mb-2">Formula:</h4>
         <p>EAD = ((1 - (O₂% ÷ 100)) ÷ 0.79) × (Actual Depth + 10) - 10</p>
         <p className="mt-2">
-          <strong>Note:</strong> EAD is used for decompression calculations when diving with Nitrox. Use air tables with
-          the EAD value.
+          <strong>Note:</strong> EAD is used for decompression calculations when
+          diving with Nitrox. Use air tables with the EAD value.
         </p>
       </div>
     </div>
-  )
+  );
 }
