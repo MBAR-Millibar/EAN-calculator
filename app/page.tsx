@@ -26,6 +26,7 @@ export default function NitroxCalculator() {
           </div>
           <p className="text-lg text-gray-300 max-w-2xl mx-auto">
             Enriched Air Nitrox calculator for certified Nitrox divers planning.
+            <br />
             Calculate MOD, Best Mix, EAD, and plan your dives safely.
           </p>
         </div>
@@ -36,7 +37,10 @@ export default function NitroxCalculator() {
             <TabsTrigger value="bestmix">Best Mix</TabsTrigger>
             <TabsTrigger value="ead">EAD</TabsTrigger>
             <TabsTrigger value="planner">Planner</TabsTrigger>
-            <TabsTrigger value="resources">Resources</TabsTrigger>
+            <TabsTrigger value="resources">
+              <span className="sm:hidden">Info</span>
+              <span className="hidden sm:inline">Resources</span>
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="mod">
