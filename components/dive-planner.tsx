@@ -16,7 +16,7 @@ interface DivePlan {
 }
 
 export function DivePlanner() {
-  const [plannedDepth, setPlannedDepth] = useState<number>(25);
+  const [plannedDepth, setPlannedDepth] = useState<number>(30);
   const [oxygenPercentage, setOxygenPercentage] = useState<number>(32);
   const [maxPO2, setMaxPO2] = useState<number>(1.4);
   const [result, setResult] = useState<DivePlan | null>(null);
@@ -45,7 +45,7 @@ export function DivePlanner() {
     setResult({
       mod: Math.round(mod * 10) / 10,
       ead: Math.round(ead * 10) / 10,
-      bestMix: Math.round(bestMix * 10) / 10,
+      bestMix: Math.round(Math.round(bestMix * 10) / 10),
       oxygenToxicity,
     });
   };
