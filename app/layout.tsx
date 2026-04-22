@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
+import { ConsentBanner } from "@/components/consent-banner";
 
 export const metadata: Metadata = {
   title: "EAN Calculator",
@@ -97,6 +99,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-G4JT0N0VW9"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-G4JT0N0VW9');
+          `}
+        </Script>
         <link rel="canonical" href="https://ean.millibar.io" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
@@ -106,7 +120,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+          {children}
+          <ConsentBanner />
+        </body>
     </html>
   );
 }
