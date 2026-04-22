@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ConsentBanner } from "@/components/consent-banner";
 
 export const metadata: Metadata = {
   title: "EAN Calculator",
@@ -106,7 +107,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+          {children}
+          <ConsentBanner />
+        </body>
     </html>
   );
 }
