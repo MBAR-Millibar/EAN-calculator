@@ -43,9 +43,9 @@ export function DivePlanner() {
     }
 
     setResult({
-      mod: Math.round(mod * 10) / 10,
-      ead: Math.round(ead * 10) / 10,
-      bestMix: Math.round(Math.round(bestMix * 10) / 10),
+      mod: Math.ceil(mod),
+      ead: Math.ceil(ead),
+      bestMix: Math.ceil(bestMix),
       oxygenToxicity,
     });
   };

@@ -15,7 +15,7 @@ export function BestMixCalculator() {
   const calculateBestMix = () => {
     // Best Mix = (Max PO2 / (Max Depth/10 + 1)) * 100
     const bestMix = (maxPO2 / (maxDepth / 10 + 1)) * 100;
-    setResult(Math.round(bestMix * 10) / 10);
+    setResult(Math.ceil(bestMix));
   };
 
   // Calculate automatically when inputs change
