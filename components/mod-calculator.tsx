@@ -15,7 +15,7 @@ export function MODCalculator() {
   const calculateMOD = () => {
     // MOD = ((Max PO2 / (O2% / 100)) - 1) * 10
     const mod = (maxPO2 / (oxygenPercentage / 100) - 1) * 10;
-    setResult(Math.round(mod * 10) / 10);
+    setResult(Math.ceil(mod));
   };
 
   // Calculate automatically when inputs change

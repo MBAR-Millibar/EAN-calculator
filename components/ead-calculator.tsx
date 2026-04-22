@@ -15,7 +15,7 @@ export function EADCalculator() {
   const calculateEAD = () => {
     // EAD = ((1 - (O2% / 100)) / 0.79) * (Actual Depth + 10) - 10
     const ead = ((1 - oxygenPercentage / 100) / 0.79) * (actualDepth + 10) - 10;
-    setResult(Math.round(ead * 10) / 10);
+    setResult(Math.ceil(ead));
   };
 
   // Calculate automatically when inputs change
