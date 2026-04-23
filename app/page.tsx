@@ -18,11 +18,11 @@ import { Resources } from "@/components/resources";
 
 export default function NitroxCalculator() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 to-white dark:from-[#111729] dark:to-[#1a1f3a]">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 to-white dark:from-[#111729] dark:to-[#1a1f3a] relative">
+      <div className="absolute top-4 right-4 z-50">
+        <ThemeToggle />
+      </div>
       <div className="container mx-auto px-4 py-8">
-        <div className="absolute top-4 right-4">
-          <ThemeToggle />
-        </div>
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-4">
             <Calculator className="h-8 w-8 text-blue-600" />
