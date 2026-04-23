@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calculator, AlertTriangle } from "lucide-react";
+import { Calculator, AlertTriangle, Share2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface DivePlan {
@@ -60,6 +60,46 @@ export function DivePlanner() {
     setOxygenPercentage(32);
     setMaxPO2(1.4);
     setResult(null);
+  };
+
+  const shareDivePlan = async () => {
+    if (!result) return;
+
+    const shareText = `Dive Plan (EAN${oxygenPercentage})
+Depth: ${plannedDepth}m (${Math.round(plannedDepth * 3.28)}ft)
+Max PO2: ${maxPO2} bar
+
+Results:
+MOD: ${result.mod}m (${Math.round(result.mod * 3.28)}ft)
+EAD: ${result.ead}m (${Math.round(result.ead * 3.28)}ft)
+Best Mix: ${result.bestMix}% (EAN${result.bestMix})
+O2 Toxicity: ${result.oxygenToxicity}
+
+Calculated with ean.millibar.io`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "My Nitrox Dive Plan",
+          text: shareText,
+          url: "https://ean.millibar.io",
+        });
+      } catch (err) {
+        // User cancelled or share failed, fallback to clipboard
+        copyToClipboard(shareText);
+      }
+    } else {
+      copyToClipboard(shareText);
+    }
+  };
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("Dive plan copied to clipboard!");
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
   };
 
   return (
@@ -120,6 +160,12 @@ export function DivePlanner() {
         <Button variant="outline" onClick={reset}>
           Reset
         </Button>
+        {result && (
+          <Button variant="outline" onClick={shareDivePlan}>
+            <Share2 className="w-4 h-4 mr-2" />
+            Share
+          </Button>
+        )}
       </div>
 
       {result && (
