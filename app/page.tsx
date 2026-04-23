@@ -144,7 +144,7 @@ export default function NitroxCalculator() {
         </Alert>
         <div className="flex flex-col items-center justify-center">
           <p className="mt-4 text-slate-600 dark:text-gray-200">
-            <a href="https://app.millibar.io/">Home</a> |
+            <a href="https://app.millibar.io/">Home</a> |{" "}
             <a href="https://app.millibar.io/terms">Terms</a> |{" "}
             <a href="https://app.millibar.io/privacy">Privacy</a> |{" "}
             <a href="https://app.millibar.io/security">Security</a> |{" "}
