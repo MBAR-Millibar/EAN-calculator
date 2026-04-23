@@ -106,7 +106,7 @@ Calculated with ean.millibar.io`;
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <Label htmlFor="planned-depth" className="text-gray-200">
+          <Label htmlFor="planned-depth" className="text-slate-700 dark:text-gray-200">
             Planned Depth (m)
           </Label>
           <Input
@@ -120,7 +120,7 @@ Calculated with ean.millibar.io`;
           />
         </div>
         <div>
-          <Label htmlFor="oxygen-mix" className="text-gray-200">
+          <Label htmlFor="oxygen-mix" className="text-slate-700 dark:text-gray-200">
             Oxygen Percentage (%)
           </Label>
           <Input
@@ -134,7 +134,7 @@ Calculated with ean.millibar.io`;
           />
         </div>
         <div>
-          <Label htmlFor="max-po2" className="text-gray-200">
+          <Label htmlFor="max-po2" className="text-slate-700 dark:text-gray-200">
             Maximum PO₂ (bar)
           </Label>
           <Input
@@ -170,63 +170,63 @@ Calculated with ean.millibar.io`;
 
       {result && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="bg-white/10 backdrop-blur-sm border-white/20 flex flex-col">
+          <Card className="bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-400/50 flex flex-col">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-gray-200">
+              <CardTitle className="text-sm text-blue-800 dark:text-gray-200">
                 Maximum Operating Depth
               </CardTitle>
             </CardHeader>
             <CardContent className="flex-1 flex items-center justify-center">
               <div className="text-center">
-                <div className="text-4xl font-bold text-blue-300">
+                <div className="text-4xl font-bold text-blue-600 dark:text-blue-300">
                   {result.mod} m
                 </div>
-                <div className="text-sm text-gray-400">
+                <div className="text-sm text-blue-500 dark:text-gray-400">
                   ({Math.round(result.mod * 3.28)} ft)
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white/10 backdrop-blur-sm border-white/20 flex flex-col">
+          <Card className="bg-purple-50 dark:bg-purple-900/30 border-purple-200 dark:border-purple-400/50 flex flex-col">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-gray-200">
+              <CardTitle className="text-sm text-purple-800 dark:text-gray-200">
                 Equivalent Air Depth
               </CardTitle>
             </CardHeader>
             <CardContent className="flex-1 flex items-center justify-center">
               <div className="text-center">
-                <div className="text-4xl font-bold text-purple-300">
+                <div className="text-4xl font-bold text-purple-600 dark:text-purple-300">
                   {result.ead} m
                 </div>
-                <div className="text-sm text-gray-400">
+                <div className="text-sm text-purple-500 dark:text-gray-400">
                   ({Math.round(result.ead * 3.28)} ft)
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white/10 backdrop-blur-sm border-white/20 flex flex-col">
+          <Card className="bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-400/50 flex flex-col">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-gray-200">
+              <CardTitle className="text-sm text-green-800 dark:text-gray-200">
                 Optimal Mix for Depth
               </CardTitle>
             </CardHeader>
             <CardContent className="flex-1 flex items-center justify-center">
               <div className="text-center">
-                <div className="text-4xl font-bold text-green-300">
+                <div className="text-4xl font-bold text-green-600 dark:text-green-300">
                   {result.bestMix}%
                 </div>
-                <div className="text-sm text-gray-400">
+                <div className="text-sm text-green-500 dark:text-gray-400">
                   EAN{Math.round(result.bestMix)}
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white/10 backdrop-blur-sm border-white/20 flex flex-col">
+          <Card className="bg-slate-50 dark:bg-white/10 border-slate-200 dark:border-white/20 flex flex-col">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-gray-200">
+              <CardTitle className="text-sm text-slate-700 dark:text-gray-200">
                 Oxygen Toxicity
               </CardTitle>
             </CardHeader>
@@ -248,9 +248,9 @@ Calculated with ean.millibar.io`;
       )}
 
       {result && result.oxygenToxicity !== "Safe" && (
-        <Alert className="border-red-400 bg-red-900/20">
-          <AlertTriangle className="h-4 w-4 text-red-400" />
-          <AlertDescription className="text-red-200">
+        <Alert className="border-red-400 bg-red-50 dark:bg-red-900/20">
+          <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400" />
+          <AlertDescription className="text-red-700 dark:text-red-200">
             <strong>Warning:</strong> Current gas mix and depth combination may
             pose oxygen toxicity risks. Review your dive plan and consider using
             a different mix or reducing maximum depth.

@@ -34,7 +34,7 @@ export function EADCalculator() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-4">
           <div>
-            <Label htmlFor="depth" className="text-gray-200">
+            <Label htmlFor="depth" className="text-slate-700 dark:text-gray-200">
               Actual Depth (m)
             </Label>
             <Input
@@ -48,7 +48,7 @@ export function EADCalculator() {
             />
           </div>
           <div>
-            <Label htmlFor="oxygen" className="text-gray-200">
+            <Label htmlFor="oxygen" className="text-slate-700 dark:text-gray-200">
               Oxygen Percentage (%)
             </Label>
             <Input
@@ -73,16 +73,16 @@ export function EADCalculator() {
         </div>
 
         {result !== null && (
-          <Card className="bg-purple-900/30 border-purple-400/50 flex items-center justify-center">
+          <Card className="bg-purple-50 dark:bg-purple-900/30 border-purple-200 dark:border-purple-400/50 flex items-center justify-center">
             <CardContent className="pt-6">
               <div className="text-center">
-                <div className="text-5xl font-bold text-purple-300 mb-2">
+                <div className="text-5xl font-bold text-purple-600 dark:text-purple-300 mb-2">
                   {result} m
                 </div>
-                <div className="text-base text-purple-200">
+                <div className="text-base text-purple-700 dark:text-purple-200">
                   Equivalent Air Depth
                 </div>
-                <div className="text-sm text-purple-600 mt-2">
+                <div className="text-sm text-purple-500 dark:text-purple-400 mt-2">
                   ({Math.round(result * 3.28)} ft)
                 </div>
               </div>
@@ -91,8 +91,8 @@ export function EADCalculator() {
         )}
       </div>
 
-      <div className="text-sm text-gray-300 bg-white/5 p-4 rounded-lg">
-        <h4 className="font-semibold mb-2">Formula:</h4>
+      <div className="text-sm text-slate-600 dark:text-gray-300 bg-slate-100 dark:bg-white/5 p-4 rounded-lg">
+        <h4 className="font-semibold mb-2 text-slate-800 dark:text-white">Formula:</h4>
         <p>EAD = ((1 - (O₂% ÷ 100)) ÷ 0.79) × (Actual Depth + 10) - 10</p>
         <p className="mt-2">
           <strong>Note:</strong> EAD is used for decompression calculations when
