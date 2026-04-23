@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
 import { ConsentBanner } from "@/components/consent-banner";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "EAN Calculator",
@@ -121,8 +122,15 @@ export default function RootLayout({
         />
       </head>
       <body>
-          {children}
-          <ConsentBanner />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <ConsentBanner />
+          </ThemeProvider>
         </body>
     </html>
   );
