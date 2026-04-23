@@ -34,7 +34,7 @@ export function MODCalculator() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-4">
           <div>
-            <Label htmlFor="oxygen" className="text-gray-200">
+            <Label htmlFor="oxygen" className="text-slate-700 dark:text-gray-200">
               Oxygen Percentage (%)
             </Label>
             <Input
@@ -48,7 +48,7 @@ export function MODCalculator() {
             />
           </div>
           <div>
-            <Label htmlFor="po2" className="text-gray-200">
+            <Label htmlFor="po2" className="text-slate-700 dark:text-gray-200">
               Maximum PO₂ (bar)
             </Label>
             <Input
@@ -76,16 +76,16 @@ export function MODCalculator() {
         </div>
 
         {result !== null && (
-          <Card className="bg-blue-900/30 border-blue-400/50 flex items-center justify-center">
+          <Card className="bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-400/50 flex items-center justify-center">
             <CardContent className="pt-6">
               <div className="text-center">
-                <div className="text-5xl font-bold text-blue-300 mb-2">
+                <div className="text-5xl font-bold text-blue-600 dark:text-blue-300 mb-2">
                   {result} m
                 </div>
-                <div className="text-base text-blue-200">
+                <div className="text-base text-blue-700 dark:text-blue-200">
                   Maximum Operating Depth
                 </div>
-                <div className="text-sm text-blue-600 mt-2">
+                <div className="text-sm text-blue-500 dark:text-blue-400 mt-2">
                   ({Math.round(result * 3.28)} ft)
                 </div>
               </div>
@@ -94,8 +94,8 @@ export function MODCalculator() {
         )}
       </div>
 
-      <div className="text-sm text-gray-300 bg-white/5 p-4 rounded-lg">
-        <h4 className="font-semibold mb-2">Formula:</h4>
+      <div className="text-sm text-slate-600 dark:text-gray-300 bg-slate-100 dark:bg-white/5 p-4 rounded-lg">
+        <h4 className="font-semibold mb-2 text-slate-800 dark:text-white">Formula:</h4>
         <p>MOD = ((Max PO₂ ÷ (O₂% ÷ 100)) - 1) × 10</p>
         <p className="mt-2">
           <strong>Note:</strong> Standard recreational limit is 1.4 bar PO₂.
