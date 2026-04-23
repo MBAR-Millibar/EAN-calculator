@@ -34,7 +34,7 @@ export function BestMixCalculator() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-4">
           <div>
-            <Label htmlFor="depth" className="text-gray-200">
+            <Label htmlFor="depth" className="text-slate-700 dark:text-gray-200">
               Maximum Depth (m)
             </Label>
             <Input
@@ -48,7 +48,7 @@ export function BestMixCalculator() {
             />
           </div>
           <div>
-            <Label htmlFor="po2" className="text-gray-200">
+            <Label htmlFor="po2" className="text-slate-700 dark:text-gray-200">
               Maximum PO₂ (bar)
             </Label>
             <Input
@@ -76,16 +76,16 @@ export function BestMixCalculator() {
         </div>
 
         {result !== null && (
-          <Card className="bg-green-900/30 border-green-400/50 flex items-center justify-center">
+          <Card className="bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-400/50 flex items-center justify-center">
             <CardContent className="pt-6">
               <div className="text-center">
-                <div className="text-5xl font-bold text-green-300 mb-2">
+                <div className="text-5xl font-bold text-green-600 dark:text-green-300 mb-2">
                   {result}%
                 </div>
-                <div className="text-base text-green-200">
+                <div className="text-base text-green-700 dark:text-green-200">
                   Optimal Oxygen Percentage
                 </div>
-                <div className="text-sm text-green-600 mt-2">
+                <div className="text-sm text-green-500 dark:text-green-400 mt-2">
                   EAN{Math.round(result)}
                 </div>
               </div>
@@ -94,8 +94,8 @@ export function BestMixCalculator() {
         )}
       </div>
 
-      <div className="text-sm text-gray-300 bg-white/5 p-4 rounded-lg">
-        <h4 className="font-semibold mb-2">Formula:</h4>
+      <div className="text-sm text-slate-600 dark:text-gray-300 bg-slate-100 dark:bg-white/5 p-4 rounded-lg">
+        <h4 className="font-semibold mb-2 text-slate-800 dark:text-white">Formula:</h4>
         <p>Best Mix = (Max PO₂ ÷ (Max Depth ÷ 10 + 1)) × 100</p>
         <p className="mt-2">
           <strong>Note:</strong> This calculates the richest Nitrox mix that can

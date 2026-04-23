@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calculator, AlertTriangle } from "lucide-react";
+import { Calculator, AlertTriangle, Share2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface DivePlan {
@@ -62,11 +62,51 @@ export function DivePlanner() {
     setResult(null);
   };
 
+  const shareDivePlan = async () => {
+    if (!result) return;
+
+    const shareText = `Dive Plan (EAN${oxygenPercentage})
+Depth: ${plannedDepth}m (${Math.round(plannedDepth * 3.28)}ft)
+Max PO2: ${maxPO2} bar
+
+Results:
+MOD: ${result.mod}m (${Math.round(result.mod * 3.28)}ft)
+EAD: ${result.ead}m (${Math.round(result.ead * 3.28)}ft)
+Best Mix: ${result.bestMix}% (EAN${result.bestMix})
+O2 Toxicity: ${result.oxygenToxicity}
+
+Calculated with ean.millibar.io`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "My Nitrox Dive Plan",
+          text: shareText,
+          url: "https://ean.millibar.io",
+        });
+      } catch (err) {
+        // User cancelled or share failed, fallback to clipboard
+        copyToClipboard(shareText);
+      }
+    } else {
+      copyToClipboard(shareText);
+    }
+  };
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("Dive plan copied to clipboard!");
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <Label htmlFor="planned-depth" className="text-gray-200">
+          <Label htmlFor="planned-depth" className="text-slate-700 dark:text-gray-200">
             Planned Depth (m)
           </Label>
           <Input
@@ -80,7 +120,7 @@ export function DivePlanner() {
           />
         </div>
         <div>
-          <Label htmlFor="oxygen-mix" className="text-gray-200">
+          <Label htmlFor="oxygen-mix" className="text-slate-700 dark:text-gray-200">
             Oxygen Percentage (%)
           </Label>
           <Input
@@ -94,7 +134,7 @@ export function DivePlanner() {
           />
         </div>
         <div>
-          <Label htmlFor="max-po2" className="text-gray-200">
+          <Label htmlFor="max-po2" className="text-slate-700 dark:text-gray-200">
             Maximum PO₂ (bar)
           </Label>
           <Input
@@ -120,67 +160,73 @@ export function DivePlanner() {
         <Button variant="outline" onClick={reset}>
           Reset
         </Button>
+        {result && (
+          <Button variant="outline" onClick={shareDivePlan}>
+            <Share2 className="w-4 h-4 mr-2" />
+            Share
+          </Button>
+        )}
       </div>
 
       {result && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="bg-white/10 backdrop-blur-sm border-white/20 flex flex-col">
+          <Card className="bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-400/50 flex flex-col">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-gray-200">
+              <CardTitle className="text-sm text-blue-800 dark:text-gray-200">
                 Maximum Operating Depth
               </CardTitle>
             </CardHeader>
             <CardContent className="flex-1 flex items-center justify-center">
               <div className="text-center">
-                <div className="text-4xl font-bold text-blue-300">
+                <div className="text-4xl font-bold text-blue-600 dark:text-blue-300">
                   {result.mod} m
                 </div>
-                <div className="text-sm text-gray-400">
+                <div className="text-sm text-blue-500 dark:text-gray-400">
                   ({Math.round(result.mod * 3.28)} ft)
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white/10 backdrop-blur-sm border-white/20 flex flex-col">
+          <Card className="bg-purple-50 dark:bg-purple-900/30 border-purple-200 dark:border-purple-400/50 flex flex-col">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-gray-200">
+              <CardTitle className="text-sm text-purple-800 dark:text-gray-200">
                 Equivalent Air Depth
               </CardTitle>
             </CardHeader>
             <CardContent className="flex-1 flex items-center justify-center">
               <div className="text-center">
-                <div className="text-4xl font-bold text-purple-300">
+                <div className="text-4xl font-bold text-purple-600 dark:text-purple-300">
                   {result.ead} m
                 </div>
-                <div className="text-sm text-gray-400">
+                <div className="text-sm text-purple-500 dark:text-gray-400">
                   ({Math.round(result.ead * 3.28)} ft)
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white/10 backdrop-blur-sm border-white/20 flex flex-col">
+          <Card className="bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-400/50 flex flex-col">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-gray-200">
+              <CardTitle className="text-sm text-green-800 dark:text-gray-200">
                 Optimal Mix for Depth
               </CardTitle>
             </CardHeader>
             <CardContent className="flex-1 flex items-center justify-center">
               <div className="text-center">
-                <div className="text-4xl font-bold text-green-300">
+                <div className="text-4xl font-bold text-green-600 dark:text-green-300">
                   {result.bestMix}%
                 </div>
-                <div className="text-sm text-gray-400">
+                <div className="text-sm text-green-500 dark:text-gray-400">
                   EAN{Math.round(result.bestMix)}
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white/10 backdrop-blur-sm border-white/20 flex flex-col">
+          <Card className="bg-slate-50 dark:bg-white/10 border-slate-200 dark:border-white/20 flex flex-col">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-gray-200">
+              <CardTitle className="text-sm text-slate-700 dark:text-gray-200">
                 Oxygen Toxicity
               </CardTitle>
             </CardHeader>
@@ -202,9 +248,9 @@ export function DivePlanner() {
       )}
 
       {result && result.oxygenToxicity !== "Safe" && (
-        <Alert className="border-red-400 bg-red-900/20">
-          <AlertTriangle className="h-4 w-4 text-red-400" />
-          <AlertDescription className="text-red-200">
+        <Alert className="border-red-400 bg-red-50 dark:bg-red-900/20">
+          <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400" />
+          <AlertDescription className="text-red-700 dark:text-red-200">
             <strong>Warning:</strong> Current gas mix and depth combination may
             pose oxygen toxicity risks. Review your dive plan and consider using
             a different mix or reducing maximum depth.
