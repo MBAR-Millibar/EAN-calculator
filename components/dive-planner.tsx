@@ -13,6 +13,7 @@ interface DivePlan {
   ead: number;
   bestMix: number;
   oxygenToxicity: string;
+  ndl: number | null;
 }
 
 export function DivePlanner() {
@@ -42,11 +43,32 @@ export function DivePlanner() {
       oxygenToxicity = "Caution - Exceeds recreational limit";
     }
 
+    // NDL calculation using PADI recreational dive planner approximation
+    // Based on EAD for Nitrox, using simplified NDL table values
+    const eadRounded = Math.ceil(ead);
+    let ndl: number | null = null;
+    
+    // NDL values based on EAD (using PADI RDP approximation)
+    if (eadRounded <= 10) ndl = 219;
+    else if (eadRounded <= 12) ndl = 147;
+    else if (eadRounded <= 14) ndl = 98;
+    else if (eadRounded <= 16) ndl = 72;
+    else if (eadRounded <= 18) ndl = 56;
+    else if (eadRounded <= 20) ndl = 45;
+    else if (eadRounded <= 22) ndl = 37;
+    else if (eadRounded <= 25) ndl = 29;
+    else if (eadRounded <= 30) ndl = 20;
+    else if (eadRounded <= 35) ndl = 14;
+    else if (eadRounded <= 40) ndl = 9;
+    else if (eadRounded <= 42) ndl = 8;
+    else ndl = null; // Beyond recreational limits
+
     setResult({
       mod: Math.ceil(mod),
       ead: Math.ceil(ead),
       bestMix: Math.ceil(bestMix),
       oxygenToxicity,
+      ndl,
     });
   };
 
@@ -72,6 +94,7 @@ Max PO2: ${maxPO2} bar
 Results:
 MOD: ${result.mod}m (${Math.round(result.mod * 3.28)}ft)
 EAD: ${result.ead}m (${Math.round(result.ead * 3.28)}ft)
+NDL: ${result.ndl ? `${result.ndl} min` : "Beyond recreational limits"}
 Best Mix: ${result.bestMix}% (EAN${result.bestMix})
 O2 Toxicity: ${result.oxygenToxicity}
 
@@ -169,7 +192,7 @@ Calculated with ean.millibar.io`;
       </div>
 
       {result && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           <Card className="bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-400/50 flex flex-col">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm text-blue-800 dark:text-gray-200">
@@ -202,6 +225,32 @@ Calculated with ean.millibar.io`;
                 <div className="text-sm text-purple-500 dark:text-gray-400">
                   ({Math.round(result.ead * 3.28)} ft)
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-amber-50 dark:bg-amber-900/30 border-amber-200 dark:border-amber-400/50 flex flex-col">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm text-amber-800 dark:text-gray-200">
+                No Decompression Limit
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex-1 flex items-center justify-center">
+              <div className="text-center">
+                {result.ndl ? (
+                  <>
+                    <div className="text-4xl font-bold text-amber-600 dark:text-amber-300">
+                      {result.ndl} min
+                    </div>
+                    <div className="text-sm text-amber-500 dark:text-gray-400">
+                      at EAD {result.ead}m
+                    </div>
+                  </>
+                ) : (
+                  <div className="text-xl font-semibold text-red-600 dark:text-red-400">
+                    Beyond recreational limits
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
