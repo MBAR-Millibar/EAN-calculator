@@ -6,7 +6,7 @@
 [![Deployed on Vercel](https://img.shields.io/badge/Deployment-Vercel-black?style=for-the-badge&logo=vercel)](https://ean.millibar.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
-A professional **Enriched Air Nitrox (EAN) calculator** designed for certified Nitrox divers. This web application provides comprehensive gas calculations and dive planning tools to ensure safe diving practices with enriched air mixtures.
+An educational **Enriched Air Nitrox (EAN) calculator** designed for learners & certified Nitrox divers. This web application provides comprehensive gas calculations and dive planning tools to ensure safe diving practices with enriched air mixtures with a focus on recreational diving.
 
 ## 🌊 Live Application
 
