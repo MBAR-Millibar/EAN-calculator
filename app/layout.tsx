@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import "./globals.css";
 import { ConsentBanner } from "@/components/consent-banner";
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
         width: 1200,
         height: 630,
         alt: "Nitrox Calculator - diving calculator for enriched air",
-        type: "image/png",
+        type: "image/jpeg",
       },
     ],
   },
@@ -50,11 +50,6 @@ export const metadata: Metadata = {
       "Enriched Air Nitrox calculator for certified divers. Calculate MOD, Best Mix, EAD, and plan your dives safely.",
     images: ["/og-image.jpg"],
   },
-  viewport: "width=device-width, initial-scale=1",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#111729" },
-    { media: "(prefers-color-scheme: dark)", color: "#111729" },
-  ],
   category: "Sports & Recreation",
   classification: "Diving Calculator",
   other: {
@@ -62,6 +57,12 @@ export const metadata: Metadata = {
     "apple-mobile-web-app-status-bar-style": "black-translucent",
     "apple-mobile-web-app-title": "Nitrox Calculator",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#111729",
 };
 
 export default function RootLayout({
