@@ -6,21 +6,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calculator } from "lucide-react";
+import { calculateBestMix } from "@/lib/ean-calculations";
 
 export function BestMixCalculator() {
   const [maxDepth, setMaxDepth] = useState<number>(30);
   const [maxPO2, setMaxPO2] = useState<number>(1.4);
   const [result, setResult] = useState<number | null>(null);
 
-  const calculateBestMix = () => {
-    // Best Mix = (Max PO2 / (Max Depth/10 + 1)) * 100
-    const bestMix = (maxPO2 / (maxDepth / 10 + 1)) * 100;
-    setResult(Math.ceil(bestMix));
+  const calculate = () => {
+    setResult(Math.ceil(calculateBestMix(maxDepth, maxPO2)));
   };
 
-  // Calculate automatically when inputs change
   useEffect(() => {
-    calculateBestMix();
+    calculate();
   }, [maxDepth, maxPO2]);
 
   const reset = () => {
@@ -65,7 +63,7 @@ export function BestMixCalculator() {
             />
           </div>
           <div className="flex gap-2">
-            <Button onClick={calculateBestMix} className="flex-1">
+            <Button onClick={calculate} className="flex-1">
               <Calculator className="w-4 h-4 mr-2" />
               Calculate Best Mix
             </Button>

@@ -6,21 +6,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calculator } from "lucide-react";
+import { calculateMOD } from "@/lib/ean-calculations";
 
 export function MODCalculator() {
   const [oxygenPercentage, setOxygenPercentage] = useState<number>(32);
   const [maxPO2, setMaxPO2] = useState<number>(1.4);
   const [result, setResult] = useState<number | null>(null);
 
-  const calculateMOD = () => {
-    // MOD = ((Max PO2 / (O2% / 100)) - 1) * 10
-    const mod = (maxPO2 / (oxygenPercentage / 100) - 1) * 10;
-    setResult(Math.ceil(mod));
+  const calculate = () => {
+    setResult(Math.ceil(calculateMOD(oxygenPercentage, maxPO2)));
   };
 
-  // Calculate automatically when inputs change
   useEffect(() => {
-    calculateMOD();
+    calculate();
   }, [oxygenPercentage, maxPO2]);
 
   const reset = () => {
@@ -65,7 +63,7 @@ export function MODCalculator() {
             />
           </div>
           <div className="flex gap-2">
-            <Button onClick={calculateMOD} className="flex-1">
+            <Button onClick={calculate} className="flex-1">
               <Calculator className="w-4 h-4 mr-2" />
               Calculate MOD
             </Button>

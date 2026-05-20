@@ -6,21 +6,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calculator } from "lucide-react";
+import { calculateEAD } from "@/lib/ean-calculations";
 
 export function EADCalculator() {
   const [actualDepth, setActualDepth] = useState<number>(30);
   const [oxygenPercentage, setOxygenPercentage] = useState<number>(32);
   const [result, setResult] = useState<number | null>(null);
 
-  const calculateEAD = () => {
-    // EAD = ((1 - (O2% / 100)) / 0.79) * (Actual Depth + 10) - 10
-    const ead = ((1 - oxygenPercentage / 100) / 0.79) * (actualDepth + 10) - 10;
-    setResult(Math.ceil(ead));
+  const calculate = () => {
+    setResult(Math.ceil(calculateEAD(actualDepth, oxygenPercentage)));
   };
 
-  // Calculate automatically when inputs change
   useEffect(() => {
-    calculateEAD();
+    calculate();
   }, [actualDepth, oxygenPercentage]);
 
   const reset = () => {
@@ -62,7 +60,7 @@ export function EADCalculator() {
             />
           </div>
           <div className="flex gap-2">
-            <Button onClick={calculateEAD} className="flex-1">
+            <Button onClick={calculate} className="flex-1">
               <Calculator className="w-4 h-4 mr-2" />
               Calculate EAD
             </Button>
