@@ -119,7 +119,7 @@ MIT — see [LICENSE](LICENSE) for details. By contributing you agree your chang
 ## 🔗 Links
 
 - **Live Application**: [https://ean.millibar.io](https://ean.millibar.io)
-- **Millibar Home**: [https://app.millibar.io](https://app.millibar.io)
+- **Millibar Home**: [https://millibar.io](https://millibar.io)
 - **Terms of Service**: [https://app.millibar.io/terms](https://app.millibar.io/terms)
 - **Privacy Policy**: [https://app.millibar.io/privacy](https://app.millibar.io/privacy)
 
