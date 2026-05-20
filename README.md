@@ -4,6 +4,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.17-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://ean.millibar.io/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
 A professional **Enriched Air Nitrox (EAN) calculator** designed for certified Nitrox divers. This web application provides comprehensive gas calculations and dive planning tools to ensure safe diving practices with enriched air mixtures.
 
@@ -25,11 +26,14 @@ A professional **Enriched Air Nitrox (EAN) calculator** designed for certified N
 - Educational content for certified divers
 
 ### 🎨 User Experience
-- Modern, responsive design with dark gradient theme
-- Intuitive tabbed interface
-- Mobile-optimized for dive planning on-the-go
-- Professional UI with Radix UI components
-- Accessibility-focused design
+- Responsive design with light/dark theme support
+- Intuitive tabbed interface, mobile-optimised for on-site dive planning
+- Real-time calculations — results update as you type
+- Share your dive plan via native share sheet or clipboard copy
+
+### 📦 Calculations Library
+
+All formulas live in `lib/ean-calculations.ts` — a pure TypeScript module with zero framework dependencies. It can be used independently in native mobile apps or distributed as an npm package. See the module for exported functions and types.
 
 ## 🚀 Technology Stack
 
@@ -45,24 +49,18 @@ A professional **Enriched Air Nitrox (EAN) calculator** designed for certified N
 ## 🏗️ Project Structure
 
 ```
-├── app/                           # Next.js App Router
-│   ├── globals.css                # Global styles
-│   ├── layout.tsx                 # Root layout with metadata
-│   ├── page.tsx                   # Main application page
-│   └── sitemap.ts                 # Dynamic sitemap generation
-├── components/                    # React components
-│   ├── ui/                        # Reusable UI components (Radix-based)
-│   ├── best-mix-calculator.tsx
-│   ├── dive-planner.tsx
-│   ├── ead-calculator.tsx
+├── app/                    # Next.js App Router (layout, page, sitemap)
+├── components/
+│   ├── ui/                 # Radix-based primitive components
 │   ├── mod-calculator.tsx
+│   ├── best-mix-calculator.tsx
+│   ├── ead-calculator.tsx
+│   ├── dive-planner.tsx
 │   └── resources.tsx
-├── lib/                           # Utilities and helpers
-│   └── utils.ts
-├── public/                        # Static assets
-│   ├── og-image.jpg               # OpenGraph image
-│   └── robots.txt                 # SEO robots file
-└── styles/                        # Additional styles
+├── lib/
+│   ├── ean-calculations.ts # Pure TS calculations library (framework-free)
+│   └── utils.ts            # Tailwind class merge utility
+└── public/                 # Static assets (OG image, favicon, robots.txt)
 ```
 
 ## 🛠️ Development
@@ -75,7 +73,7 @@ A professional **Enriched Air Nitrox (EAN) calculator** designed for certified N
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/ean-calc.git
+   git clone https://github.com/LeandroBerlin/ean-calc.git
    cd ean-calc
    ```
 
@@ -101,16 +99,6 @@ pnpm start    # Start production server
 pnpm lint     # Run ESLint
 ```
 
-## 📱 SEO & Social Media
-
-The application includes comprehensive SEO optimization:
-- **OpenGraph tags** for social media sharing
-- **Twitter Card** support
-- **Structured data** (JSON-LD) for search engines
-- **Sitemap** generation
-- **Robots.txt** for crawler guidance
-- **Mobile-optimized** meta tags
-
 ## ⚠️ Safety Notice
 
 **Important**: This calculator is designed for **certified Nitrox divers only**. 
@@ -122,123 +110,11 @@ The application includes comprehensive SEO optimization:
 
 ## 🤝 Contributing
 
-We welcome contributions to the EAN Calculator! 
-
-### How to Contribute
-
-#### 🐛 Reporting Bugs
-- Use the [GitHub Issues](https://github.com/your-username/ean-calc/issues) to report bugs
-- Check if the issue already exists before creating a new one
-- Include detailed steps to reproduce the issue
-- Provide information about your browser and operating system
-
-#### 💡 Suggesting Features
-- Open a [GitHub Issue](https://github.com/your-username/ean-calc/issues) with the "enhancement" label
-- Clearly describe the feature and its benefits for divers
-- Consider safety implications for diving calculations
-
-#### 🔧 Code Contributions
-
-**Step 1: Fork & Clone**
-```bash
-# Fork the repository on GitHub, then clone your fork
-git clone https://github.com/YOUR-USERNAME/ean-calc.git
-cd ean-calc
-```
-
-**Step 2: Set up the development environment**
-```bash
-# Install dependencies
-pnpm install
-
-# Start the development server
-pnpm dev
-```
-
-**Step 3: Create a feature branch**
-```bash
-# Create and switch to a new branch
-git checkout -b feature/your-feature-name
-
-# Or for bug fixes
-git checkout -b fix/bug-description
-```
-
-**Step 4: Make your changes**
-- Write clean, well-documented code
-- Follow the existing code style and conventions
-- Add comments for complex diving calculations
-- Ensure accessibility standards are maintained
-
-**Step 5: Test your changes**
-```bash
-# Run the linter
-pnpm lint
-
-# Build the project to check for errors
-pnpm build
-
-# Test the application thoroughly
-pnpm dev
-```
-
-**Step 6: Commit your changes**
-```bash
-# Stage your changes
-git add .
-
-# Commit with a descriptive message
-git commit -m "feat: add new feature description"
-
-# Or for bug fixes
-git commit -m "fix: resolve issue with calculation"
-```
-
-**Step 7: Push and create a Pull Request**
-```bash
-# Push your branch to your fork
-git push origin feature/your-feature-name
-
-# Go to GitHub and create a Pull Request
-```
-
-### 📋 Pull Request Guidelines
-
-- **Title**: Use a clear, descriptive title
-- **Description**: Explain what changes you made and why
-- **Testing**: Describe how you tested your changes
-- **Screenshots**: Include screenshots for UI changes
-- **Safety**: For calculation changes, explain validation methods
-
-### 🎯 Development Guidelines
-
-- **Code Style**: Follow TypeScript and React best practices
-- **Components**: Use existing UI components from `components/ui/`
-- **Calculations**: Ensure all diving calculations are mathematically correct
-- **Safety**: Always prioritize diver safety in feature implementations
-- **Documentation**: Update README.md if needed
-
-### 🔍 Code Review Process
-
-1. All PRs require at least one review
-2. Maintainers will review for code quality and safety
-3. Diving calculation changes require extra scrutiny
-4. CI/CD checks must pass before merging
-
-### 📜 Commit Convention
-
-We follow conventional commits:
-- `feat:` - New features
-- `fix:` - Bug fixes
-- `docs:` - Documentation changes
-- `style:` - Code style changes
-- `refactor:` - Code refactoring
-- `test:` - Adding tests
-- `chore:` - Maintenance tasks
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on reporting bugs, submitting pull requests, and the special requirements for changes to diving calculations.
 
 ## 📄 License
 
-© 2025 Millibar - All Rights Reserved
+MIT — see [LICENSE](LICENSE) for details. By contributing you agree your changes will be released under the same terms.
 
 ## 🔗 Links
 
