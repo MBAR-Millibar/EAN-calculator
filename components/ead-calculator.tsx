@@ -9,12 +9,15 @@ import { Calculator } from "lucide-react";
 import { calculateEAD } from "@/lib/ean-calculations";
 
 export function EADCalculator() {
-  const [actualDepth, setActualDepth] = useState<number>(30);
-  const [oxygenPercentage, setOxygenPercentage] = useState<number>(32);
+  const [actualDepth, setActualDepth] = useState("30");
+  const [oxygenPercentage, setOxygenPercentage] = useState("32");
   const [result, setResult] = useState<number | null>(null);
 
   const calculate = () => {
-    setResult(Math.ceil(calculateEAD(actualDepth, oxygenPercentage)));
+    const depth = parseFloat(actualDepth);
+    const o2 = parseFloat(oxygenPercentage);
+    if (isNaN(depth) || isNaN(o2)) return;
+    setResult(Math.ceil(calculateEAD(depth, o2)));
   };
 
   useEffect(() => {
@@ -22,8 +25,8 @@ export function EADCalculator() {
   }, [actualDepth, oxygenPercentage]);
 
   const reset = () => {
-    setActualDepth(30);
-    setOxygenPercentage(32);
+    setActualDepth("30");
+    setOxygenPercentage("32");
     setResult(null);
   };
 
@@ -39,7 +42,7 @@ export function EADCalculator() {
               id="depth"
               type="number"
               value={actualDepth}
-              onChange={(e) => setActualDepth(Number(e.target.value))}
+              onChange={(e) => setActualDepth(e.target.value)}
               min="0"
               max="100"
               step="0.1"
@@ -53,7 +56,7 @@ export function EADCalculator() {
               id="oxygen"
               type="number"
               value={oxygenPercentage}
-              onChange={(e) => setOxygenPercentage(Number(e.target.value))}
+              onChange={(e) => setOxygenPercentage(e.target.value)}
               min="21"
               max="100"
               step="0.1"
@@ -61,7 +64,7 @@ export function EADCalculator() {
           </div>
           <div className="flex gap-2">
             <Button onClick={calculate} className="flex-1">
-              <Calculator className="w-4 h-4 mr-2" />
+              <Calculator className="w-4 h-4 mr-2 text-green-500 dark:text-white" />
               Calculate EAD
             </Button>
             <Button variant="outline" onClick={reset}>

@@ -17,13 +17,20 @@ function toxicityLabel(result: DivePlanResult): string {
 }
 
 export function DivePlanner() {
-  const [plannedDepth, setPlannedDepth] = useState<number>(30);
-  const [oxygenPercentage, setOxygenPercentage] = useState<number>(32);
-  const [maxPO2, setMaxPO2] = useState<number>(1.4);
+  const [plannedDepth, setPlannedDepth] = useState("30");
+  const [oxygenPercentage, setOxygenPercentage] = useState("32");
+  const [maxPO2, setMaxPO2] = useState("1.4");
   const [result, setResult] = useState<DivePlanResult | null>(null);
 
   const calculate = () => {
-    const plan = calculateDivePlan(plannedDepth, oxygenPercentage, maxPO2);
+    const depth = parseFloat(plannedDepth);
+    const o2 = parseFloat(oxygenPercentage);
+    const po2 = parseFloat(maxPO2);
+    if (isNaN(depth) || isNaN(o2) || isNaN(po2) || oxygenPercentage.replace(".", "").length < 2 || o2 < 21) {
+      setResult(null);
+      return;
+    }
+    const plan = calculateDivePlan(depth, o2, po2);
     setResult({
       ...plan,
       mod: Math.ceil(plan.mod),
@@ -37,9 +44,9 @@ export function DivePlanner() {
   }, [plannedDepth, oxygenPercentage, maxPO2]);
 
   const reset = () => {
-    setPlannedDepth(25);
-    setOxygenPercentage(32);
-    setMaxPO2(1.4);
+    setPlannedDepth("25");
+    setOxygenPercentage("32");
+    setMaxPO2("1.4");
     setResult(null);
   };
 
@@ -47,13 +54,13 @@ export function DivePlanner() {
     if (!result) return;
 
     const shareText = `Dive Plan (EAN${oxygenPercentage})
-Depth: ${plannedDepth}m (${Math.round(plannedDepth * 3.28)}ft)
+Depth: ${plannedDepth}m (${Math.round(parseFloat(plannedDepth) * 3.28)}ft)
 Max PO2: ${maxPO2} bar
 
 Results:
 MOD: ${result.mod}m (${Math.round(result.mod * 3.28)}ft)
 EAD: ${result.ead}m (${Math.round(result.ead * 3.28)}ft)
-NDL: ${result.ndl ? `${result.ndl} min` : "Beyond recreational limits"}
+NDL: ${result.ndl ? `${result.ndl} min` : "It will require DECO"}
 Best Mix: ${result.bestMix}% (EAN${result.bestMix})
 O2 Toxicity: ${toxicityLabel(result)}
 
@@ -95,7 +102,7 @@ Calculated with ean.millibar.io`;
             id="planned-depth"
             type="number"
             value={plannedDepth}
-            onChange={(e) => setPlannedDepth(Number(e.target.value))}
+            onChange={(e) => setPlannedDepth(e.target.value)}
             min="0"
             max="100"
             step="0.1"
@@ -109,7 +116,7 @@ Calculated with ean.millibar.io`;
             id="oxygen-mix"
             type="number"
             value={oxygenPercentage}
-            onChange={(e) => setOxygenPercentage(Number(e.target.value))}
+            onChange={(e) => setOxygenPercentage(e.target.value)}
             min="21"
             max="100"
             step="0.1"
@@ -123,10 +130,7 @@ Calculated with ean.millibar.io`;
             id="max-po2"
             type="number"
             value={maxPO2}
-            onChange={(e) => {
-              const value = Number(e.target.value);
-              setMaxPO2(Math.min(value, 1.8));
-            }}
+            onChange={(e) => setMaxPO2(e.target.value)}
             min="0.1"
             max="1.8"
             step="0.1"
@@ -136,7 +140,7 @@ Calculated with ean.millibar.io`;
 
       <div className="flex gap-2">
         <Button onClick={calculate} className="flex-1">
-          <Calculator className="w-4 h-4 mr-2" />
+          <Calculator className="w-4 h-4 mr-2 text-green-500 dark:text-white" />
           Plan Dive
         </Button>
         <Button variant="outline" onClick={reset}>
@@ -207,7 +211,7 @@ Calculated with ean.millibar.io`;
                   </>
                 ) : (
                   <div className="text-xl font-semibold text-red-600 dark:text-red-400">
-                    Beyond recreational limits
+                    It will require DECO
                   </div>
                 )}
               </div>
@@ -240,12 +244,12 @@ Calculated with ean.millibar.io`;
             </CardHeader>
             <CardContent className="flex-1 flex items-center justify-center">
               <div
-                className={`text-4xl font-semibold ${
+                className={`font-semibold ${
                   result.oxygenToxicity.level === "safe"
-                    ? "text-green-600"
+                    ? "text-4xl text-green-600"
                     : result.oxygenToxicity.level === "caution"
-                    ? "text-yellow-600"
-                    : "text-red-600"
+                    ? "text-xl text-yellow-600"
+                    : "text-4xl text-red-600"
                 }`}
               >
                 {toxicityLabel(result)}
