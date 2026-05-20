@@ -7,74 +7,33 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calculator, AlertTriangle, Share2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { calculateDivePlan, DivePlanResult } from "@/lib/ean-calculations";
 
-interface DivePlan {
-  mod: number;
-  ead: number;
-  bestMix: number;
-  oxygenToxicity: string;
-  ndl: number | null;
+function toxicityLabel(result: DivePlanResult): string {
+  const { level, po2 } = result.oxygenToxicity;
+  if (level === "dangerous") return `Dangerous - ${po2.toFixed(2)} bar PO₂`;
+  if (level === "caution") return "Caution - Exceeds recreational limit";
+  return "Safe";
 }
 
 export function DivePlanner() {
   const [plannedDepth, setPlannedDepth] = useState<number>(30);
   const [oxygenPercentage, setOxygenPercentage] = useState<number>(32);
   const [maxPO2, setMaxPO2] = useState<number>(1.4);
-  const [result, setResult] = useState<DivePlan | null>(null);
+  const [result, setResult] = useState<DivePlanResult | null>(null);
 
-  const calculateDivePlan = () => {
-    // MOD calculation
-    const mod = (maxPO2 / (oxygenPercentage / 100) - 1) * 10;
-
-    // EAD calculation
-    const ead =
-      ((1 - oxygenPercentage / 100) / 0.79) * (plannedDepth + 10) - 10;
-
-    // Best Mix calculation
-    const bestMix = (maxPO2 / (plannedDepth / 10 + 1)) * 100;
-
-    // Oxygen toxicity assessment
-    let oxygenToxicity = "Safe";
-    const currentPO2 = (oxygenPercentage / 100) * (plannedDepth / 10 + 1);
-
-    if (currentPO2 > 1.6) {
-      oxygenToxicity = `Dangerous - ${currentPO2.toFixed(2)} bar PO₂`;
-    } else if (currentPO2 > 1.4) {
-      oxygenToxicity = "Caution - Exceeds recreational limit";
-    }
-
-    // NDL calculation using PADI recreational dive planner approximation
-    // Based on EAD for Nitrox, using simplified NDL table values
-    const eadRounded = Math.ceil(ead);
-    let ndl: number | null = null;
-    
-    // NDL values based on EAD (using PADI RDP approximation)
-    if (eadRounded <= 10) ndl = 219;
-    else if (eadRounded <= 12) ndl = 147;
-    else if (eadRounded <= 14) ndl = 98;
-    else if (eadRounded <= 16) ndl = 72;
-    else if (eadRounded <= 18) ndl = 56;
-    else if (eadRounded <= 20) ndl = 45;
-    else if (eadRounded <= 22) ndl = 37;
-    else if (eadRounded <= 25) ndl = 29;
-    else if (eadRounded <= 30) ndl = 20;
-    else if (eadRounded <= 35) ndl = 14;
-    else if (eadRounded <= 40) ndl = 9;
-    else if (eadRounded <= 42) ndl = 8;
-    else ndl = null; // Beyond recreational limits
-
+  const calculate = () => {
+    const plan = calculateDivePlan(plannedDepth, oxygenPercentage, maxPO2);
     setResult({
-      mod: Math.ceil(mod),
-      ead: Math.ceil(ead),
-      bestMix: Math.ceil(bestMix),
-      oxygenToxicity,
-      ndl,
+      ...plan,
+      mod: Math.ceil(plan.mod),
+      ead: Math.ceil(plan.ead),
+      bestMix: Math.ceil(plan.bestMix),
     });
   };
 
-  // Calculate automatically when inputs change
   useEffect(() => {
-    calculateDivePlan();
+    calculate();
   }, [plannedDepth, oxygenPercentage, maxPO2]);
 
   const reset = () => {
@@ -96,7 +55,7 @@ MOD: ${result.mod}m (${Math.round(result.mod * 3.28)}ft)
 EAD: ${result.ead}m (${Math.round(result.ead * 3.28)}ft)
 NDL: ${result.ndl ? `${result.ndl} min` : "Beyond recreational limits"}
 Best Mix: ${result.bestMix}% (EAN${result.bestMix})
-O2 Toxicity: ${result.oxygenToxicity}
+O2 Toxicity: ${toxicityLabel(result)}
 
 Calculated with ean.millibar.io`;
 
@@ -176,7 +135,7 @@ Calculated with ean.millibar.io`;
       </div>
 
       <div className="flex gap-2">
-        <Button onClick={calculateDivePlan} className="flex-1">
+        <Button onClick={calculate} className="flex-1">
           <Calculator className="w-4 h-4 mr-2" />
           Plan Dive
         </Button>
@@ -282,21 +241,21 @@ Calculated with ean.millibar.io`;
             <CardContent className="flex-1 flex items-center justify-center">
               <div
                 className={`text-4xl font-semibold ${
-                  result.oxygenToxicity === "Safe"
+                  result.oxygenToxicity.level === "safe"
                     ? "text-green-600"
-                    : result.oxygenToxicity.includes("Caution")
+                    : result.oxygenToxicity.level === "caution"
                     ? "text-yellow-600"
                     : "text-red-600"
                 }`}
               >
-                {result.oxygenToxicity}
+                {toxicityLabel(result)}
               </div>
             </CardContent>
           </Card>
         </div>
       )}
 
-      {result && result.oxygenToxicity !== "Safe" && (
+      {result && result.oxygenToxicity.level !== "safe" && (
         <Alert className="border-red-400 bg-red-50 dark:bg-red-900/20">
           <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400" />
           <AlertDescription className="text-red-700 dark:text-red-200">
