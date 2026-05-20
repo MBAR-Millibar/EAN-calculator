@@ -9,12 +9,18 @@ import { Calculator } from "lucide-react";
 import { calculateMOD } from "@/lib/ean-calculations";
 
 export function MODCalculator() {
-  const [oxygenPercentage, setOxygenPercentage] = useState<number>(32);
-  const [maxPO2, setMaxPO2] = useState<number>(1.4);
+  const [oxygenPercentage, setOxygenPercentage] = useState("32");
+  const [maxPO2, setMaxPO2] = useState("1.4");
   const [result, setResult] = useState<number | null>(null);
 
   const calculate = () => {
-    setResult(Math.ceil(calculateMOD(oxygenPercentage, maxPO2)));
+    const o2 = parseFloat(oxygenPercentage);
+    const po2 = parseFloat(maxPO2);
+    if (isNaN(o2) || isNaN(po2) || oxygenPercentage.replace(".", "").length < 2 || o2 < 21) {
+      setResult(null);
+      return;
+    }
+    setResult(Math.ceil(calculateMOD(o2, po2)));
   };
 
   useEffect(() => {
@@ -22,8 +28,8 @@ export function MODCalculator() {
   }, [oxygenPercentage, maxPO2]);
 
   const reset = () => {
-    setOxygenPercentage(32);
-    setMaxPO2(1.4);
+    setOxygenPercentage("32");
+    setMaxPO2("1.4");
     setResult(null);
   };
 
@@ -39,7 +45,7 @@ export function MODCalculator() {
               id="oxygen"
               type="number"
               value={oxygenPercentage}
-              onChange={(e) => setOxygenPercentage(Number(e.target.value))}
+              onChange={(e) => setOxygenPercentage(e.target.value)}
               min="21"
               max="100"
               step="0.1"
@@ -53,10 +59,7 @@ export function MODCalculator() {
               id="po2"
               type="number"
               value={maxPO2}
-              onChange={(e) => {
-                const value = Number(e.target.value);
-                setMaxPO2(Math.min(value, 1.8));
-              }}
+              onChange={(e) => setMaxPO2(e.target.value)}
               min="0.1"
               max="1.8"
               step="0.1"
@@ -64,7 +67,7 @@ export function MODCalculator() {
           </div>
           <div className="flex gap-2">
             <Button onClick={calculate} className="flex-1">
-              <Calculator className="w-4 h-4 mr-2" />
+              <Calculator className="w-4 h-4 mr-2 text-green-500 dark:text-white" />
               Calculate MOD
             </Button>
             <Button variant="outline" onClick={reset}>

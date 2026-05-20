@@ -9,12 +9,15 @@ import { Calculator } from "lucide-react";
 import { calculateBestMix } from "@/lib/ean-calculations";
 
 export function BestMixCalculator() {
-  const [maxDepth, setMaxDepth] = useState<number>(30);
-  const [maxPO2, setMaxPO2] = useState<number>(1.4);
+  const [maxDepth, setMaxDepth] = useState("30");
+  const [maxPO2, setMaxPO2] = useState("1.4");
   const [result, setResult] = useState<number | null>(null);
 
   const calculate = () => {
-    setResult(Math.ceil(calculateBestMix(maxDepth, maxPO2)));
+    const depth = parseFloat(maxDepth);
+    const po2 = parseFloat(maxPO2);
+    if (isNaN(depth) || isNaN(po2)) return;
+    setResult(Math.ceil(calculateBestMix(depth, po2)));
   };
 
   useEffect(() => {
@@ -22,8 +25,8 @@ export function BestMixCalculator() {
   }, [maxDepth, maxPO2]);
 
   const reset = () => {
-    setMaxDepth(30);
-    setMaxPO2(1.4);
+    setMaxDepth("30");
+    setMaxPO2("1.4");
     setResult(null);
   };
 
@@ -39,7 +42,7 @@ export function BestMixCalculator() {
               id="depth"
               type="number"
               value={maxDepth}
-              onChange={(e) => setMaxDepth(Number(e.target.value))}
+              onChange={(e) => setMaxDepth(e.target.value)}
               min="0"
               max="100"
               step="0.1"
@@ -53,10 +56,7 @@ export function BestMixCalculator() {
               id="po2"
               type="number"
               value={maxPO2}
-              onChange={(e) => {
-                const value = Number(e.target.value);
-                setMaxPO2(Math.min(value, 1.8));
-              }}
+              onChange={(e) => setMaxPO2(e.target.value)}
               min="0.1"
               max="1.8"
               step="0.1"
@@ -64,7 +64,7 @@ export function BestMixCalculator() {
           </div>
           <div className="flex gap-2">
             <Button onClick={calculate} className="flex-1">
-              <Calculator className="w-4 h-4 mr-2" />
+              <Calculator className="w-4 h-4 mr-2 text-green-500 dark:text-white" />
               Calculate Best Mix
             </Button>
             <Button variant="outline" onClick={reset}>
