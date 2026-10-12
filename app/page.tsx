@@ -61,7 +61,7 @@ export default function NitroxCalculator() {
     <div id="top" className="min-h-screen">
       <SiteHeader />
 
-      <main className="mx-auto w-full max-w-5xl px-5 pb-16 md:px-10">
+      <main className="mx-auto w-full max-w-7xl px-5 pb-16 md:px-10">
         <section className="pb-10 pt-9 md:pb-14 md:pt-12">
           <p className="eyebrow mb-5">Enriched Air Nitrox</p>
           <h1 className="max-w-2xl text-balance text-[clamp(2.75rem,6vw,4.5rem)] font-semibold leading-[0.98] tracking-[-0.06em]">

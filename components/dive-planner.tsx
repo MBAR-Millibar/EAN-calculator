@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calculator, AlertTriangle, Share2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
@@ -25,6 +24,63 @@ function po2Status(result: DivePlanResult): string {
 function cnsLabel(result: DivePlanResult): string {
   if (result.cnsAtNDL === null) return "CNS: n/a";
   return `CNS ${Math.ceil(result.cnsAtNDL)}% at ${result.ndl} min`;
+}
+
+const PALETTE = {
+  blue: {
+    card: "border-blue-200 bg-blue-50 dark:border-blue-400/40 dark:bg-blue-900/30",
+    title: "text-blue-800 dark:text-blue-300",
+    value: "text-blue-600 dark:text-blue-300",
+  },
+  purple: {
+    card: "border-purple-200 bg-purple-50 dark:border-purple-400/40 dark:bg-purple-900/30",
+    title: "text-purple-800 dark:text-purple-300",
+    value: "text-purple-600 dark:text-purple-300",
+  },
+  amber: {
+    card: "border-amber-200 bg-amber-50 dark:border-amber-400/40 dark:bg-amber-900/30",
+    title: "text-amber-800 dark:text-amber-300",
+    value: "text-amber-600 dark:text-amber-300",
+  },
+  green: {
+    card: "border-green-200 bg-green-50 dark:border-green-400/40 dark:bg-green-900/30",
+    title: "text-green-800 dark:text-green-300",
+    value: "text-green-600 dark:text-green-300",
+  },
+  slate: {
+    card: "border-slate-200 bg-slate-50 dark:border-slate-400/40 dark:bg-slate-900/30",
+    title: "text-slate-800 dark:text-slate-300",
+    value: "text-slate-700 dark:text-slate-200",
+  },
+};
+
+type Palette = (typeof PALETTE)[keyof typeof PALETTE];
+
+function MetricCard({
+  palette,
+  title,
+  value,
+  detail,
+  source,
+  valueClassName,
+}: {
+  palette: Palette;
+  title: string;
+  value: string;
+  detail: string;
+  source?: string;
+  valueClassName?: string;
+}) {
+  return (
+    <div className={`flex flex-col rounded-[1.25rem] border p-6 ${palette.card}`}>
+      <p className={`eyebrow text-[11px] tracking-[0.16em] ${palette.title}`}>{title}</p>
+      <p className={`mt-4 text-4xl font-semibold tracking-[-0.05em] ${valueClassName ?? palette.value}`}>
+        {value}
+      </p>
+      <p className="mt-1 text-sm text-muted-foreground">{detail}</p>
+      {source && <p className="mt-auto pt-4 text-xs text-muted-foreground">{source}</p>}
+    </div>
+  );
 }
 
 export function DivePlanner() {
@@ -99,8 +155,8 @@ Calculated with ean.millibar.io`;
   };
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="space-y-8">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
         <div>
           <Label htmlFor="planned-depth">
             Planned Depth (m)
@@ -162,122 +218,77 @@ Calculated with ean.millibar.io`;
       </div>
 
       {result && (
-        <div
-          role="status"
-          aria-live="polite"
-          className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5"
-        >
-          <Card className="flex flex-col border-transparent bg-secondary">
-            <CardHeader className="pb-2">
-              <CardTitle className="eyebrow text-[11px] leading-snug tracking-[0.16em]">
-                Maximum Operating Depth
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex-1 flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-4xl font-semibold tracking-[-0.05em] text-primary">
-                  {result.mod} m
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  ({floorSafe(metersToFeet(result.mod))} ft)
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        <div role="status" aria-live="polite" className="space-y-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <MetricCard
+              palette={PALETTE.blue}
+              title="Maximum Operating Depth"
+              value={`${result.mod} m`}
+              detail={`${floorSafe(metersToFeet(result.mod))} ft`}
+            />
+            <MetricCard
+              palette={PALETTE.purple}
+              title="Equivalent Air Depth"
+              value={`${result.ead} m`}
+              detail={`${Math.round(result.ead * 3.28)} ft`}
+            />
+            {result.ndl ? (
+              <MetricCard
+                palette={PALETTE.amber}
+                title="No Decompression Limit"
+                value={`${result.ndl} min`}
+                detail={`at EAD ${result.ead} m`}
+                source={NDL_TABLE_SOURCE}
+              />
+            ) : (
+              <MetricCard
+                palette={PALETTE.amber}
+                title="No Decompression Limit"
+                value="Deco"
+                detail="This dive would require decompression"
+                valueClassName="text-destructive"
+              />
+            )}
+            <MetricCard
+              palette={PALETTE.green}
+              title="Optimal Mix for Depth"
+              value={`${result.bestMix}%`}
+              detail={`EAN${Math.round(result.bestMix)}`}
+            />
+          </div>
 
-          <Card className="flex flex-col border-transparent bg-secondary">
-            <CardHeader className="pb-2">
-              <CardTitle className="eyebrow text-[11px] leading-snug tracking-[0.16em]">
-                Equivalent Air Depth
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex-1 flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-4xl font-semibold tracking-[-0.05em] text-primary">
-                  {result.ead} m
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  ({Math.round(result.ead * 3.28)} ft)
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="flex flex-col border-transparent bg-secondary">
-            <CardHeader className="pb-2">
-              <CardTitle className="eyebrow text-[11px] leading-snug tracking-[0.16em]">
-                No Decompression Limit
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex-1 flex items-center justify-center">
-              <div className="text-center">
-                {result.ndl ? (
-                  <>
-                    <div className="text-4xl font-semibold tracking-[-0.05em] text-primary">
-                      {result.ndl} min
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      at EAD {result.ead}m
-                    </div>
-                    <div className="text-xs text-muted-foreground mt-1">
-                      {NDL_TABLE_SOURCE}
-                    </div>
-                  </>
-                ) : (
-                  <div className="text-xl font-semibold text-destructive">
-                    It will require DECO
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="flex flex-col border-transparent bg-secondary">
-            <CardHeader className="pb-2">
-              <CardTitle className="eyebrow text-[11px] leading-snug tracking-[0.16em]">
-                Optimal Mix for Depth
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex-1 flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-4xl font-semibold tracking-[-0.05em] text-primary">
-                  {result.bestMix}%
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  EAN{Math.round(result.bestMix)}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="flex flex-col border-transparent bg-secondary">
-            <CardHeader className="pb-2">
-              <CardTitle className="eyebrow text-[11px] leading-snug tracking-[0.16em]">
+          <div className={`grid gap-6 rounded-[1.25rem] border p-6 sm:grid-cols-3 sm:items-end ${PALETTE.slate.card}`}>
+            <div>
+              <p className={`eyebrow text-[11px] tracking-[0.16em] ${PALETTE.slate.title}`}>
                 Oxygen Exposure
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex-1 flex items-center justify-center">
-              <div className="text-center">
-                <div
-                  className={`text-4xl font-semibold tracking-[-0.05em] ${
-                    result.oxygenToxicity.level === "safe"
-                      ? "text-primary"
-                      : result.oxygenToxicity.level === "caution"
-                      ? "text-amber-600 dark:text-amber-400"
-                      : "text-destructive"
-                  }`}
-                >
-                  {result.po2.toFixed(2)} bar
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  PO₂ at depth · {po2Status(result)}
-                </div>
-                <div className="text-sm text-muted-foreground mt-1">
-                  {cnsLabel(result)}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </p>
+              <p
+                className={`mt-3 text-4xl font-semibold tracking-[-0.05em] ${
+                  result.oxygenToxicity.level === "safe"
+                    ? PALETTE.slate.value
+                    : result.oxygenToxicity.level === "caution"
+                    ? "text-amber-600 dark:text-amber-400"
+                    : "text-destructive"
+                }`}
+              >
+                {result.po2.toFixed(2)} bar
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">PO₂ at planned depth</p>
+            </div>
+            <div>
+              <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                Limit
+              </p>
+              <p className="mt-2 text-base font-medium">{po2Status(result)}</p>
+            </div>
+            <div>
+              <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                CNS clock
+              </p>
+              <p className="mt-2 text-base font-medium">{cnsLabel(result)}</p>
+              <p className="mt-1 text-xs text-muted-foreground">NOAA single-exposure limits</p>
+            </div>
+          </div>
         </div>
       )}
 

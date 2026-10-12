@@ -16,13 +16,7 @@ export function SiteHeader() {
           Nitrox calculator
         </span>
       </a>
-      <nav aria-label="Main navigation" className="flex items-center gap-3 md:gap-8">
-        <a
-          href="https://instructors.millibar.io"
-          className="hidden text-sm text-muted-foreground transition hover:text-foreground md:inline"
-        >
-          Instructor Network
-        </a>
+      <nav aria-label="Main navigation" className="flex items-center gap-3">
         <ThemeToggle />
         <a
           href="https://millibar.io"
