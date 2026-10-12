@@ -1,0 +1,93 @@
+/*
+ * Millibar design tokens, mirrored from instructors.millibar.io (light theme).
+ * Values are HSL triplets for Tailwind's hsl(var(--x) / <alpha-value>).
+ * Border and input are the reference's foreground at 12% / 14% alpha,
+ * flattened onto the background.
+ *
+ * The reference site is light-only. The dark theme below is derived from the
+ * same ocean palette (reference chart-4 #3a9ec8 as primary) for this app's
+ * dark-mode toggle.
+ *
+ * Keep in sync with the Instructor Network site until both import a shared
+ * Millibar tokens package.
+ */
+
+:root {
+  --background: 198.8 100.0% 96.9%; /* #effaff */
+  --foreground: 200.0 57.9% 11.2%; /* #0c222d */
+  --card: 0.0 0.0% 100.0%; /* #ffffff */
+  --card-foreground: 200.0 57.9% 11.2%; /* #0c222d */
+  --popover: 0.0 0.0% 100.0%; /* #ffffff */
+  --popover-foreground: 200.0 57.9% 11.2%; /* #0c222d */
+  --primary: 198.5 100.0% 32.4%; /* #0072a5 */
+  --primary-foreground: 210.0 100.0% 98.8%; /* #f9fcff */
+  --secondary: 200.0 71.4% 91.8%; /* #dbeff9 */
+  --secondary-foreground: 200.0 57.9% 11.2%; /* #0c222d */
+  --muted: 200.0 71.4% 91.8%; /* #dbeff9 */
+  --muted-foreground: 203.2 17.7% 34.3%; /* #485b67 */
+  --accent: 200.0 71.4% 91.8%; /* #dbeff9 */
+  --accent-foreground: 200.0 57.9% 11.2%; /* #0c222d */
+  --destructive: 359.3 65.1% 49.4%; /* #d02c2e */
+  --destructive-foreground: 210.0 100.0% 98.8%; /* #f9fcff */
+  --border: 200.0 26.5% 86.7%; /* #d4e0e6 */
+  --input: 198.9 24.7% 84.9%; /* #cfdce2 */
+  --ring: 198.5 100.0% 32.4%; /* #0072a5 */
+  --chart-1: 198.5 100.0% 32.4%; /* #0072a5 */
+  --chart-2: 203.2 17.7% 34.3%; /* #485b67 */
+  --chart-3: 200.0 57.9% 11.2%; /* #0c222d */
+  --chart-4: 197.7 56.3% 50.6%; /* #3a9ec8 */
+  --chart-5: 199.7 42.7% 70.6%; /* #94bfd4 */
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: 200.0 54.5% 8.6%; /* #0a1a22 */
+  --foreground: 198.9 61.3% 93.9%; /* #e6f3f9 */
+  --card: 200.0 52.4% 12.4%; /* #0f2530 */
+  --card-foreground: 198.9 61.3% 93.9%; /* #e6f3f9 */
+  --popover: 200.0 52.4% 12.4%; /* #0f2530 */
+  --popover-foreground: 198.9 61.3% 93.9%; /* #e6f3f9 */
+  --primary: 197.7 56.3% 50.6%; /* #3a9ec8 */
+  --primary-foreground: 199.1 73.3% 5.9%; /* #04131a */
+  --secondary: 199.0 48.2% 16.7%; /* #16323f */
+  --secondary-foreground: 198.9 61.3% 93.9%; /* #e6f3f9 */
+  --muted: 199.0 48.2% 16.7%; /* #16323f */
+  --muted-foreground: 200.6 22.3% 69.2%; /* #9fb6c2 */
+  --accent: 199.0 48.2% 16.7%; /* #16323f */
+  --accent-foreground: 198.9 61.3% 93.9%; /* #e6f3f9 */
+  --destructive: 358.1 75.1% 59.0%; /* #e5484d */
+  --destructive-foreground: 210.0 100.0% 98.8%; /* #f9fcff */
+  --border: 199.0 39.8% 20.2%; /* #1f3b48 */
+  --input: 200.5 34.4% 25.1%; /* #2a4756 */
+  --ring: 197.7 56.3% 50.6%; /* #3a9ec8 */
+  --chart-1: 197.7 56.3% 50.6%; /* #3a9ec8 */
+  --chart-2: 200.6 22.3% 69.2%; /* #9fb6c2 */
+  --chart-3: 198.9 61.3% 93.9%; /* #e6f3f9 */
+  --chart-4: 198.5 100.0% 32.4%; /* #0072a5 */
+  --chart-5: 199.7 42.7% 70.6%; /* #94bfd4 */
+}
+
+/* Brand mark: ocean-blue disc with a ring, as in the reference footer. */
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 50%;
+  background: hsl(var(--primary));
+}
+.brand-mark span {
+  width: 0.72rem;
+  height: 0.72rem;
+  border: 1px solid hsl(var(--primary-foreground));
+  border-radius: 50%;
+}
+.brand-mark-small {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+.brand-mark-small span {
+  width: 0.55rem;
+  height: 0.55rem;
+}

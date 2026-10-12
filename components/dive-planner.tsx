@@ -102,7 +102,7 @@ Calculated with ean.millibar.io`;
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <Label htmlFor="planned-depth" className="text-slate-700 dark:text-gray-200">
+          <Label htmlFor="planned-depth">
             Planned Depth (m)
           </Label>
           <Input
@@ -116,7 +116,7 @@ Calculated with ean.millibar.io`;
           />
         </div>
         <div>
-          <Label htmlFor="oxygen-mix" className="text-slate-700 dark:text-gray-200">
+          <Label htmlFor="oxygen-mix">
             Oxygen Percentage (%)
           </Label>
           <Input
@@ -130,7 +130,7 @@ Calculated with ean.millibar.io`;
           />
         </div>
         <div>
-          <Label htmlFor="max-po2" className="text-slate-700 dark:text-gray-200">
+          <Label htmlFor="max-po2">
             Maximum PO₂ (bar)
           </Label>
           <Input
@@ -145,9 +145,9 @@ Calculated with ean.millibar.io`;
         </div>
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         <Button onClick={calculate} className="flex-1">
-          <Calculator className="w-4 h-4 mr-2 text-green-500 dark:text-white" />
+          <Calculator aria-hidden="true" />
           Plan Dive
         </Button>
         <Button variant="outline" onClick={reset}>
@@ -155,53 +155,57 @@ Calculated with ean.millibar.io`;
         </Button>
         {result && (
           <Button variant="outline" onClick={shareDivePlan}>
-            <Share2 className="w-4 h-4 mr-2" />
+            <Share2 aria-hidden="true" />
             Share
           </Button>
         )}
       </div>
 
       {result && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-          <Card className="bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-400/50 flex flex-col">
+        <div
+          role="status"
+          aria-live="polite"
+          className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5"
+        >
+          <Card className="flex flex-col border-transparent bg-secondary">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-blue-800 dark:text-gray-200">
+              <CardTitle className="eyebrow text-[11px] leading-snug tracking-[0.16em]">
                 Maximum Operating Depth
               </CardTitle>
             </CardHeader>
             <CardContent className="flex-1 flex items-center justify-center">
               <div className="text-center">
-                <div className="text-4xl font-bold text-blue-600 dark:text-blue-300">
+                <div className="text-4xl font-semibold tracking-[-0.05em] text-primary">
                   {result.mod} m
                 </div>
-                <div className="text-sm text-blue-500 dark:text-gray-400">
+                <div className="text-sm text-muted-foreground">
                   ({floorSafe(metersToFeet(result.mod))} ft)
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-purple-50 dark:bg-purple-900/30 border-purple-200 dark:border-purple-400/50 flex flex-col">
+          <Card className="flex flex-col border-transparent bg-secondary">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-purple-800 dark:text-gray-200">
+              <CardTitle className="eyebrow text-[11px] leading-snug tracking-[0.16em]">
                 Equivalent Air Depth
               </CardTitle>
             </CardHeader>
             <CardContent className="flex-1 flex items-center justify-center">
               <div className="text-center">
-                <div className="text-4xl font-bold text-purple-600 dark:text-purple-300">
+                <div className="text-4xl font-semibold tracking-[-0.05em] text-primary">
                   {result.ead} m
                 </div>
-                <div className="text-sm text-purple-500 dark:text-gray-400">
+                <div className="text-sm text-muted-foreground">
                   ({Math.round(result.ead * 3.28)} ft)
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-amber-50 dark:bg-amber-900/30 border-amber-200 dark:border-amber-400/50 flex flex-col">
+          <Card className="flex flex-col border-transparent bg-secondary">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-amber-800 dark:text-gray-200">
+              <CardTitle className="eyebrow text-[11px] leading-snug tracking-[0.16em]">
                 No Decompression Limit
               </CardTitle>
             </CardHeader>
@@ -209,18 +213,18 @@ Calculated with ean.millibar.io`;
               <div className="text-center">
                 {result.ndl ? (
                   <>
-                    <div className="text-4xl font-bold text-amber-600 dark:text-amber-300">
+                    <div className="text-4xl font-semibold tracking-[-0.05em] text-primary">
                       {result.ndl} min
                     </div>
-                    <div className="text-sm text-amber-500 dark:text-gray-400">
+                    <div className="text-sm text-muted-foreground">
                       at EAD {result.ead}m
                     </div>
-                    <div className="text-xs text-amber-500 dark:text-gray-400 mt-1">
+                    <div className="text-xs text-muted-foreground mt-1">
                       {NDL_TABLE_SOURCE}
                     </div>
                   </>
                 ) : (
-                  <div className="text-xl font-semibold text-red-600 dark:text-red-400">
+                  <div className="text-xl font-semibold text-destructive">
                     It will require DECO
                   </div>
                 )}
@@ -228,47 +232,47 @@ Calculated with ean.millibar.io`;
             </CardContent>
           </Card>
 
-          <Card className="bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-400/50 flex flex-col">
+          <Card className="flex flex-col border-transparent bg-secondary">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-green-800 dark:text-gray-200">
+              <CardTitle className="eyebrow text-[11px] leading-snug tracking-[0.16em]">
                 Optimal Mix for Depth
               </CardTitle>
             </CardHeader>
             <CardContent className="flex-1 flex items-center justify-center">
               <div className="text-center">
-                <div className="text-4xl font-bold text-green-600 dark:text-green-300">
+                <div className="text-4xl font-semibold tracking-[-0.05em] text-primary">
                   {result.bestMix}%
                 </div>
-                <div className="text-sm text-green-500 dark:text-gray-400">
+                <div className="text-sm text-muted-foreground">
                   EAN{Math.round(result.bestMix)}
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-slate-50 dark:bg-white/10 border-slate-200 dark:border-white/20 flex flex-col">
+          <Card className="flex flex-col border-transparent bg-secondary">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-slate-700 dark:text-gray-200">
+              <CardTitle className="eyebrow text-[11px] leading-snug tracking-[0.16em]">
                 Oxygen Exposure
               </CardTitle>
             </CardHeader>
             <CardContent className="flex-1 flex items-center justify-center">
               <div className="text-center">
                 <div
-                  className={`text-4xl font-bold ${
+                  className={`text-4xl font-semibold tracking-[-0.05em] ${
                     result.oxygenToxicity.level === "safe"
-                      ? "text-slate-700 dark:text-gray-200"
+                      ? "text-primary"
                       : result.oxygenToxicity.level === "caution"
-                      ? "text-yellow-600"
-                      : "text-red-600"
+                      ? "text-amber-600 dark:text-amber-400"
+                      : "text-destructive"
                   }`}
                 >
                   {result.po2.toFixed(2)} bar
                 </div>
-                <div className="text-sm text-slate-500 dark:text-gray-400">
+                <div className="text-sm text-muted-foreground">
                   PO₂ at depth · {po2Status(result)}
                 </div>
-                <div className="text-sm text-slate-500 dark:text-gray-400 mt-1">
+                <div className="text-sm text-muted-foreground mt-1">
                   {cnsLabel(result)}
                 </div>
               </div>
@@ -278,9 +282,9 @@ Calculated with ean.millibar.io`;
       )}
 
       {result && result.oxygenToxicity.level !== "safe" && (
-        <Alert className="border-red-400 bg-red-50 dark:bg-red-900/20">
-          <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400" />
-          <AlertDescription className="text-red-700 dark:text-red-200">
+        <Alert className="rounded-[1.25rem] border-destructive/50 bg-destructive/10">
+          <AlertTriangle className="h-4 w-4 text-destructive" aria-hidden="true" />
+          <AlertDescription className="text-foreground">
             <strong>Warning:</strong> Current gas mix and depth combination may
             pose oxygen toxicity risks. Review your dive plan and consider using
             a different mix or reducing maximum depth.

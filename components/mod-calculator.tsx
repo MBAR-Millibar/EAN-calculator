@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent } from "@/components/ui/card";
+import { FormulaNote, ResultHero } from "@/components/result-hero";
 import { Calculator } from "lucide-react";
 import { calculateMODMetres, floorSafe, metersToFeet } from "@/lib/ean-calculations";
 
@@ -36,9 +36,9 @@ export function MODCalculator() {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-4">
+        <div className="space-y-5">
           <div>
-            <Label htmlFor="oxygen" className="text-slate-700 dark:text-gray-200">
+            <Label htmlFor="oxygen">
               Oxygen Percentage (%)
             </Label>
             <Input
@@ -52,7 +52,7 @@ export function MODCalculator() {
             />
           </div>
           <div>
-            <Label htmlFor="po2" className="text-slate-700 dark:text-gray-200">
+            <Label htmlFor="po2">
               Maximum PO₂ (bar)
             </Label>
             <Input
@@ -65,9 +65,9 @@ export function MODCalculator() {
               step="0.1"
             />
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Button onClick={calculate} className="flex-1">
-              <Calculator className="w-4 h-4 mr-2 text-green-500 dark:text-white" />
+              <Calculator aria-hidden="true" />
               Calculate MOD
             </Button>
             <Button variant="outline" onClick={reset}>
@@ -77,37 +77,26 @@ export function MODCalculator() {
         </div>
 
         {result !== null && (
-          <Card className="bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-400/50 flex items-center justify-center">
-            <CardContent className="pt-6">
-              <div className="text-center">
-                <div className="text-5xl font-bold text-blue-600 dark:text-blue-300 mb-2">
-                  {result} m
-                </div>
-                <div className="text-base text-blue-700 dark:text-blue-200">
-                  Maximum Operating Depth
-                </div>
-                <div className="text-sm text-blue-500 dark:text-blue-400 mt-2">
-                  ({floorSafe(metersToFeet(result))} ft)
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <ResultHero
+            label="Maximum Operating Depth"
+            value={result}
+            unit="m"
+            detail={`${floorSafe(metersToFeet(result))} ft`}
+          />
         )}
       </div>
 
-      <div className="text-sm text-slate-600 dark:text-gray-300 bg-slate-100 dark:bg-white/5 p-4 rounded-lg">
-        <h4 className="font-semibold mb-2 text-slate-800 dark:text-white">Formula:</h4>
-        <p>MOD = ((Max PO₂ ÷ (O₂% ÷ 100)) - 1) × 10</p>
-        <p className="mt-2">
-          The result is rounded <strong>down</strong> to the whole metre, so
+      <FormulaNote formula="MOD = ((Max PO₂ ÷ (O₂% ÷ 100)) - 1) × 10">
+        <p>
+          The result is rounded <strong className="text-foreground">down</strong> to the whole metre, so
           it never takes you past the PO₂ limit.
         </p>
-        <p className="mt-2">
-          <strong>Note:</strong> 1.4 bar PO₂ is the working limit for the
+        <p>
+          <strong className="text-foreground">Note:</strong> 1.4 bar PO₂ is the working limit for the
           whole dive. 1.6 bar is a contingency limit only (and used for
           decompression in technical diving), never a depth to plan for.
         </p>
-      </div>
+      </FormulaNote>
     </div>
   );
 }
