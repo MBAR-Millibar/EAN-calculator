@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { BookOpen, AlertTriangle, Calculator, Waves } from "lucide-react";
 import { calculateMODMetres } from "@/lib/ean-calculations";
 
@@ -12,37 +11,31 @@ export function Resources() {
       term: "MOD",
       definition:
         "Maximum Operating Depth - The deepest depth at which a gas mix can be safely used",
-      color: "bg-blue-100 text-blue-700 border-blue-300 dark:bg-blue-900/50 dark:text-blue-300 dark:border-blue-400/50",
     },
     {
       term: "EAD",
       definition:
         "Equivalent Air Depth - The depth of air that would have the same nitrogen partial pressure",
-      color: "bg-purple-100 text-purple-700 border-purple-300 dark:bg-purple-900/50 dark:text-purple-300 dark:border-purple-400/50",
     },
     {
       term: "PO₂",
       definition:
         "Partial Pressure of Oxygen - The pressure exerted by oxygen in a gas mixture",
-      color: "bg-orange-100 text-orange-700 border-orange-300 dark:bg-orange-900/50 dark:text-orange-300 dark:border-orange-400/50",
     },
     {
       term: "EAN",
       definition:
         "Enriched Air Nitrox - Air with higher oxygen content than normal air (21%)",
-      color: "bg-green-100 text-green-700 border-green-300 dark:bg-green-900/50 dark:text-green-300 dark:border-green-400/50",
     },
     {
       term: "CNS",
       definition:
         "Central Nervous System oxygen toxicity - Risk from high oxygen partial pressures",
-      color: "bg-red-100 text-red-700 border-red-300 dark:bg-red-900/50 dark:text-red-300 dark:border-red-400/50",
     },
     {
       term: "OTU",
       definition:
         "Oxygen Tolerance Unit - Measure of pulmonary oxygen toxicity exposure",
-      color: "bg-amber-100 text-amber-700 border-amber-300 dark:bg-amber-900/50 dark:text-amber-300 dark:border-amber-400/50",
     },
   ];
 
@@ -69,7 +62,7 @@ export function Resources() {
 
   const modCell = (mod: number) =>
     mod > RECREATIONAL_DEPTH_LIMIT ? (
-      <span className="text-slate-400 dark:text-gray-500">{mod}m *</span>
+      <span className="text-muted-foreground">{mod}m *</span>
     ) : (
       `${mod}m`
     );
@@ -77,10 +70,10 @@ export function Resources() {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="bg-white dark:bg-white/10 backdrop-blur-sm border-slate-200 dark:border-white/20">
+        <Card className="border bg-card">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-slate-800 dark:text-gray-200">
-              <BookOpen className="h-5 w-5" />
+            <CardTitle className="flex items-center gap-2 text-xl">
+              <BookOpen className="h-5 w-5 text-primary" aria-hidden="true" />
               Diving Terminology
             </CardTitle>
           </CardHeader>
@@ -88,34 +81,29 @@ export function Resources() {
             {terminology.map((item, index) => (
               <div
                 key={index}
-                className="border-b border-slate-200 dark:border-white/10 pb-2 last:border-b-0"
+                className="border-b pb-3 last:border-b-0"
               >
                 <div className="flex items-start gap-2">
-                  <Badge
-                    variant="outline"
-                    className={`font-mono text-xs ${item.color}`}
-                  >
-                    {item.term}
-                  </Badge>
+                  <span className="eyebrow">{item.term}</span>
                 </div>
-                <p className="text-sm text-slate-600 dark:text-gray-300 mt-1">{item.definition}</p>
+                <p className="mt-1 text-sm text-muted-foreground">{item.definition}</p>
               </div>
             ))}
           </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-white/10 backdrop-blur-sm border-slate-200 dark:border-white/20">
+        <Card className="border bg-card">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-slate-800 dark:text-gray-200">
-              <AlertTriangle className="h-5 w-5" />
+            <CardTitle className="flex items-center gap-2 text-xl">
+              <AlertTriangle className="h-5 w-5 text-primary" aria-hidden="true" />
               Safety Guidelines
             </CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="space-y-3">
               {safetyGuidelines.map((guideline, index) => (
-                <li key={index} className="flex items-start gap-3 text-base text-slate-700 dark:text-gray-200">
-                  <div className="w-2 h-2 bg-red-500 rounded-full mt-2.5 flex-shrink-0" />
+                <li key={index} className="flex items-start gap-3 text-base">
+                  <div className="mt-2.5 h-2 w-2 flex-shrink-0 rounded-full bg-primary" aria-hidden="true" />
                   {guideline}
                 </li>
               ))}
@@ -124,28 +112,28 @@ export function Resources() {
         </Card>
       </div>
 
-      <Card className="bg-white dark:bg-white/10 backdrop-blur-sm border-slate-200 dark:border-white/20">
+      <Card className="border bg-card">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-slate-800 dark:text-gray-200">
-            <Calculator className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2 text-xl">
+              <Calculator className="h-5 w-5 text-primary" aria-hidden="true" />
             Common Nitrox Mixes
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
-            <table className="w-full text-sm text-slate-700 dark:text-gray-200">
+            <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-200 dark:border-white/10">
-                  <th className="text-left p-2">Mix</th>
-                  <th className="text-left p-2">O₂%</th>
-                  <th className="text-left p-2">N₂%</th>
-                  <th className="text-left p-2">MOD @ 1.4 bar</th>
-                  <th className="text-left p-2">MOD @ 1.6 bar (contingency)</th>
+                <tr className="border-b">
+                  <th className="p-2 text-left font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">Mix</th>
+                  <th className="p-2 text-left font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">O₂%</th>
+                  <th className="p-2 text-left font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">N₂%</th>
+                  <th className="p-2 text-left font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">MOD @ 1.4 bar</th>
+                  <th className="p-2 text-left font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">MOD @ 1.6 bar (contingency)</th>
                 </tr>
               </thead>
               <tbody>
                 {commonMixes.map((mix, index) => (
-                  <tr key={index} className="border-b border-slate-200 dark:border-white/10">
+                  <tr key={index} className="border-b last:border-b-0">
                     <td className="p-2 font-semibold">{mix.name}</td>
                     <td className="p-2">{mix.oxygen}%</td>
                     <td className="p-2">{mix.nitrogen}%</td>
@@ -156,7 +144,7 @@ export function Resources() {
               </tbody>
             </table>
           </div>
-          <p className="text-xs text-slate-500 dark:text-gray-400 mt-3">
+          <p className="mt-3 text-xs text-muted-foreground">
             MODs are rounded down to the whole metre. * Beyond the{" "}
             {RECREATIONAL_DEPTH_LIMIT} m recreational limit: technical diving,
             outside the scope of recreational nitrox training. Shown for
@@ -165,14 +153,14 @@ export function Resources() {
         </CardContent>
       </Card>
 
-      <Card className="bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-400/50 backdrop-blur-sm">
+      <Card className="border-transparent bg-secondary">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-200">
-            <Waves className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2 text-xl">
+            <Waves className="h-5 w-5 text-primary" aria-hidden="true" />
             Important Disclaimer
           </CardTitle>
         </CardHeader>
-        <CardContent className="text-blue-600 dark:text-blue-200">
+        <CardContent className="text-foreground/80">
           <p className="text-sm leading-relaxed">
             This calculator is provided for educational purposes, for divers
             learning nitrox in a training course and as a planning tool for

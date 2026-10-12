@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent } from "@/components/ui/card";
+import { FormulaNote, ResultHero } from "@/components/result-hero";
 import { Calculator } from "lucide-react";
 import { calculateEAD } from "@/lib/ean-calculations";
 
@@ -33,9 +33,9 @@ export function EADCalculator() {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-4">
+        <div className="space-y-5">
           <div>
-            <Label htmlFor="depth" className="text-slate-700 dark:text-gray-200">
+            <Label htmlFor="depth">
               Actual Depth (m)
             </Label>
             <Input
@@ -49,7 +49,7 @@ export function EADCalculator() {
             />
           </div>
           <div>
-            <Label htmlFor="oxygen" className="text-slate-700 dark:text-gray-200">
+            <Label htmlFor="oxygen">
               Oxygen Percentage (%)
             </Label>
             <Input
@@ -62,9 +62,9 @@ export function EADCalculator() {
               step="0.1"
             />
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Button onClick={calculate} className="flex-1">
-              <Calculator className="w-4 h-4 mr-2 text-green-500 dark:text-white" />
+              <Calculator aria-hidden="true" />
               Calculate EAD
             </Button>
             <Button variant="outline" onClick={reset}>
@@ -74,32 +74,21 @@ export function EADCalculator() {
         </div>
 
         {result !== null && (
-          <Card className="bg-purple-50 dark:bg-purple-900/30 border-purple-200 dark:border-purple-400/50 flex items-center justify-center">
-            <CardContent className="pt-6">
-              <div className="text-center">
-                <div className="text-5xl font-bold text-purple-600 dark:text-purple-300 mb-2">
-                  {result} m
-                </div>
-                <div className="text-base text-purple-700 dark:text-purple-200">
-                  Equivalent Air Depth
-                </div>
-                <div className="text-sm text-purple-500 dark:text-purple-400 mt-2">
-                  ({Math.round(result * 3.28)} ft)
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <ResultHero
+            label="Equivalent Air Depth"
+            value={result}
+            unit="m"
+            detail={`${Math.round(result * 3.28)} ft`}
+          />
         )}
       </div>
 
-      <div className="text-sm text-slate-600 dark:text-gray-300 bg-slate-100 dark:bg-white/5 p-4 rounded-lg">
-        <h4 className="font-semibold mb-2 text-slate-800 dark:text-white">Formula:</h4>
-        <p>EAD = ((1 - (O₂% ÷ 100)) ÷ 0.79) × (Actual Depth + 10) - 10</p>
-        <p className="mt-2">
-          <strong>Note:</strong> EAD is used for decompression calculations when
+      <FormulaNote formula="EAD = ((1 - (O₂% ÷ 100)) ÷ 0.79) × (Actual Depth + 10) - 10">
+        <p>
+          <strong className="text-foreground">Note:</strong> EAD is used for decompression calculations when
           diving with Nitrox. Use air tables with the EAD value.
         </p>
-      </div>
+      </FormulaNote>
     </div>
   );
 }
