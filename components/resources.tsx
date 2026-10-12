@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { BookOpen, AlertTriangle, Calculator, Waves } from "lucide-react";
 import { calculateMODMetres } from "@/lib/ean-calculations";
 
@@ -11,31 +12,43 @@ export function Resources() {
       term: "MOD",
       definition:
         "Maximum Operating Depth - The deepest depth at which a gas mix can be safely used",
+      color:
+        "bg-blue-100 text-blue-700 border-blue-300 dark:bg-blue-900/50 dark:text-blue-300 dark:border-blue-400/50",
     },
     {
       term: "EAD",
       definition:
         "Equivalent Air Depth - The depth of air that would have the same nitrogen partial pressure",
+      color:
+        "bg-purple-100 text-purple-700 border-purple-300 dark:bg-purple-900/50 dark:text-purple-300 dark:border-purple-400/50",
     },
     {
       term: "PO₂",
       definition:
         "Partial Pressure of Oxygen - The pressure exerted by oxygen in a gas mixture",
+      color:
+        "bg-orange-100 text-orange-700 border-orange-300 dark:bg-orange-900/50 dark:text-orange-300 dark:border-orange-400/50",
     },
     {
       term: "EAN",
       definition:
         "Enriched Air Nitrox - Air with higher oxygen content than normal air (21%)",
+      color:
+        "bg-green-100 text-green-700 border-green-300 dark:bg-green-900/50 dark:text-green-300 dark:border-green-400/50",
     },
     {
       term: "CNS",
       definition:
         "Central Nervous System oxygen toxicity - Risk from high oxygen partial pressures",
+      color:
+        "bg-red-100 text-red-700 border-red-300 dark:bg-red-900/50 dark:text-red-300 dark:border-red-400/50",
     },
     {
       term: "OTU",
       definition:
         "Oxygen Tolerance Unit - Measure of pulmonary oxygen toxicity exposure",
+      color:
+        "bg-amber-100 text-amber-700 border-amber-300 dark:bg-amber-900/50 dark:text-amber-300 dark:border-amber-400/50",
     },
   ];
 
@@ -84,7 +97,12 @@ export function Resources() {
                 className="border-b pb-3 last:border-b-0"
               >
                 <div className="flex items-start gap-2">
-                  <span className="eyebrow">{item.term}</span>
+                  <Badge
+                    variant="outline"
+                    className={`font-mono text-xs ${item.color}`}
+                  >
+                    {item.term}
+                  </Badge>
                 </div>
                 <p className="mt-1 text-sm text-muted-foreground">{item.definition}</p>
               </div>
