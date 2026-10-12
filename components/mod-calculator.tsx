@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calculator } from "lucide-react";
-import { calculateMOD } from "@/lib/ean-calculations";
+import { calculateMODMetres, floorSafe, metersToFeet } from "@/lib/ean-calculations";
 
 export function MODCalculator() {
   const [oxygenPercentage, setOxygenPercentage] = useState("32");
@@ -20,7 +20,7 @@ export function MODCalculator() {
       setResult(null);
       return;
     }
-    setResult(Math.ceil(calculateMOD(o2, po2)));
+    setResult(calculateMODMetres(o2, po2));
   };
 
   useEffect(() => {
@@ -87,7 +87,7 @@ export function MODCalculator() {
                   Maximum Operating Depth
                 </div>
                 <div className="text-sm text-blue-500 dark:text-blue-400 mt-2">
-                  ({Math.round(result * 3.28)} ft)
+                  ({floorSafe(metersToFeet(result))} ft)
                 </div>
               </div>
             </CardContent>
@@ -99,8 +99,13 @@ export function MODCalculator() {
         <h4 className="font-semibold mb-2 text-slate-800 dark:text-white">Formula:</h4>
         <p>MOD = ((Max PO₂ ÷ (O₂% ÷ 100)) - 1) × 10</p>
         <p className="mt-2">
-          <strong>Note:</strong> Standard recreational limit is 1.4 bar PO₂.
-          Technical diving may use 1.6 bar for working portions of the dive.
+          The result is rounded <strong>down</strong> to the whole metre, so
+          it never takes you past the PO₂ limit.
+        </p>
+        <p className="mt-2">
+          <strong>Note:</strong> 1.4 bar PO₂ is the working limit for the
+          whole dive. 1.6 bar is a contingency limit only (and used for
+          decompression in technical diving), never a depth to plan for.
         </p>
       </div>
     </div>

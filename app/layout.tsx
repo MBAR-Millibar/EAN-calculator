@@ -7,7 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 export const metadata: Metadata = {
   title: "EAN Calculator",
   description:
-    "Enriched Air Nitrox calculator for certified divers. Calculate MOD, Best Mix, EAD, and plan your dives safely with comprehensive gas calculations.",
+    "Enriched Air Nitrox calculator for nitrox divers and learners. Calculate MOD, Best Mix, EAD, and plan your dives safely with comprehensive gas calculations.",
   keywords: [
     "nitrox",
     "diving",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     siteName: "Millibar - Nitrox Calculator",
     title: "EAN Calculator - Enriched Air Diving Calculator",
     description:
-      "Enriched Air Nitrox calculator for certified divers. Calculate MOD, Best Mix, EAD, and plan your dives safely with comprehensive gas calculations.",
+      "Enriched Air Nitrox calculator for nitrox divers and learners. Calculate MOD, Best Mix, EAD, and plan your dives safely with comprehensive gas calculations.",
     images: [
       {
         url: "/og-image.jpg",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     creator: "@millibar_io",
     title: "Nitrox Calculator - Enriched Air Diving Calculator",
     description:
-      "Enriched Air Nitrox calculator for certified divers. Calculate MOD, Best Mix, EAD, and plan your dives safely.",
+      "Enriched Air Nitrox calculator for nitrox divers and learners. Calculate MOD, Best Mix, EAD, and plan your dives safely.",
     images: ["/og-image.jpg"],
   },
   category: "Sports & Recreation",
@@ -75,7 +75,7 @@ export default function RootLayout({
     "@type": "WebApplication",
     name: "Nitrox Calculator",
     description:
-      "Professional Enriched Air Nitrox calculator for certified divers. Calculate MOD, Best Mix, EAD, and plan your dives safely.",
+      "Professional Enriched Air Nitrox calculator for nitrox divers and learners. Calculate MOD, Best Mix, EAD, and plan your dives safely.",
     url: "https://ean.millibar.io",
     applicationCategory: "UtilityApplication",
     operatingSystem: "Web Browser",
