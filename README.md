@@ -101,7 +101,7 @@ pnpm lint     # Run ESLint
 
 ## ⚠️ Safety Notice
 
-**Important**: This calculator is designed for **certified Nitrox divers only**. 
+**Important**: Only **certified Nitrox divers** should dive with nitrox. Learners can use this calculator for training and practice.
 
 - Always verify calculations independently
 - Follow safe diving practices and certification guidelines

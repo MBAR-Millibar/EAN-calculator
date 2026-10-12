@@ -1,6 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, AlertTriangle, Calculator, Waves } from "lucide-react";
+import { calculateMODMetres } from "@/lib/ean-calculations";
+
+/** Deepest depth covered by recreational nitrox training, in metres. */
+const RECREATIONAL_DEPTH_LIMIT = 40;
 
 export function Resources() {
   const terminology = [
@@ -44,37 +48,31 @@ export function Resources() {
 
   const safetyGuidelines = [
     "Always analyze your gas mix before diving",
-    "Never exceed 1.4 bar PO₂ for recreational diving",
-    "Use 1.6 bar PO₂ maximum for technical diving working portions",
-    "Plan contingency depths and gas switches",
+    "Never exceed 1.4 bar PO₂ for the working part of any dive",
+    "Treat 1.6 bar PO₂ as a contingency limit only, never a planning target",
+    "Plan your maximum depth with a margin above the MOD",
     "Carry appropriate emergency procedures",
     "Maintain proper certification and training",
   ];
 
   const commonMixes = [
-    {
-      name: "EAN32",
-      oxygen: 32,
-      nitrogen: 68,
-      mod_14: "33.8m",
-      mod_16: "40.0m",
-    },
-    {
-      name: "EAN36",
-      oxygen: 36,
-      nitrogen: 64,
-      mod_14: "28.9m",
-      mod_16: "34.4m",
-    },
-    {
-      name: "EAN40",
-      oxygen: 40,
-      nitrogen: 60,
-      mod_14: "25.0m",
-      mod_16: "30.0m",
-    },
-    { name: "Air", oxygen: 21, nitrogen: 79, mod_14: "56.7m", mod_16: "66.2m" },
-  ];
+    { name: "EAN32", oxygen: 32 },
+    { name: "EAN36", oxygen: 36 },
+    { name: "EAN40", oxygen: 40 },
+    { name: "Air", oxygen: 21 },
+  ].map((mix) => ({
+    ...mix,
+    nitrogen: 100 - mix.oxygen,
+    mod_14: calculateMODMetres(mix.oxygen, 1.4),
+    mod_16: calculateMODMetres(mix.oxygen, 1.6),
+  }));
+
+  const modCell = (mod: number) =>
+    mod > RECREATIONAL_DEPTH_LIMIT ? (
+      <span className="text-slate-400 dark:text-gray-500">{mod}m *</span>
+    ) : (
+      `${mod}m`
+    );
 
   return (
     <div className="space-y-6">
@@ -142,7 +140,7 @@ export function Resources() {
                   <th className="text-left p-2">O₂%</th>
                   <th className="text-left p-2">N₂%</th>
                   <th className="text-left p-2">MOD @ 1.4 bar</th>
-                  <th className="text-left p-2">MOD @ 1.6 bar</th>
+                  <th className="text-left p-2">MOD @ 1.6 bar (contingency)</th>
                 </tr>
               </thead>
               <tbody>
@@ -151,13 +149,19 @@ export function Resources() {
                     <td className="p-2 font-semibold">{mix.name}</td>
                     <td className="p-2">{mix.oxygen}%</td>
                     <td className="p-2">{mix.nitrogen}%</td>
-                    <td className="p-2">{mix.mod_14}</td>
-                    <td className="p-2">{mix.mod_16}</td>
+                    <td className="p-2">{modCell(mix.mod_14)}</td>
+                    <td className="p-2">{modCell(mix.mod_16)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+          <p className="text-xs text-slate-500 dark:text-gray-400 mt-3">
+            MODs are rounded down to the whole metre. * Beyond the{" "}
+            {RECREATIONAL_DEPTH_LIMIT} m recreational limit: technical diving,
+            outside the scope of recreational nitrox training. Shown for
+            reference only, not as a target depth.
+          </p>
         </CardContent>
       </Card>
 
@@ -170,12 +174,15 @@ export function Resources() {
         </CardHeader>
         <CardContent className="text-blue-600 dark:text-blue-200">
           <p className="text-sm leading-relaxed">
-            This calculator is provided for educational purposes and as a
-            planning tool for certified Nitrox divers. All calculations should
+            This calculator is provided for educational purposes, for divers
+            learning nitrox in a training course and as a planning tool for
+            certified Nitrox divers. All calculations should
             be verified independently using certified dive tables or dive
             computers. The user assumes all responsibility for the safe planning
             and execution of their dives. Always dive within your certification
-            limits and follow established safety protocols.
+            limits and follow established safety protocols. If you are not yet
+            nitrox certified, use it to learn and practise, and dive nitrox
+            only once you are certified.
           </p>
         </CardContent>
       </Card>

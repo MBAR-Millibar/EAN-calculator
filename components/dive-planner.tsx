@@ -7,13 +7,24 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calculator, AlertTriangle, Share2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { calculateDivePlan, DivePlanResult } from "@/lib/ean-calculations";
+import {
+  calculateDivePlan,
+  DivePlanResult,
+  floorSafe,
+  metersToFeet,
+  NDL_TABLE_SOURCE,
+} from "@/lib/ean-calculations";
 
-function toxicityLabel(result: DivePlanResult): string {
-  const { level, po2 } = result.oxygenToxicity;
-  if (level === "dangerous") return `Dangerous - ${po2.toFixed(2)} bar PO₂`;
-  if (level === "caution") return "Caution - Exceeds recreational limit";
-  return "Safe";
+function po2Status(result: DivePlanResult): string {
+  const { level } = result.oxygenToxicity;
+  if (level === "dangerous") return "Above 1.6 bar - do not dive";
+  if (level === "caution") return "Above 1.4 bar working limit";
+  return "Within 1.4 bar working limit";
+}
+
+function cnsLabel(result: DivePlanResult): string {
+  if (result.cnsAtNDL === null) return "CNS: n/a";
+  return `CNS ${Math.ceil(result.cnsAtNDL)}% at ${result.ndl} min`;
 }
 
 export function DivePlanner() {
@@ -31,12 +42,7 @@ export function DivePlanner() {
       return;
     }
     const plan = calculateDivePlan(depth, o2, po2);
-    setResult({
-      ...plan,
-      mod: Math.ceil(plan.mod),
-      ead: Math.ceil(plan.ead),
-      bestMix: Math.ceil(plan.bestMix),
-    });
+    setResult({ ...plan, ead: Math.ceil(plan.ead) });
   };
 
   useEffect(() => {
@@ -58,11 +64,12 @@ Depth: ${plannedDepth}m (${Math.round(parseFloat(plannedDepth) * 3.28)}ft)
 Max PO2: ${maxPO2} bar
 
 Results:
-MOD: ${result.mod}m (${Math.round(result.mod * 3.28)}ft)
+MOD: ${result.mod}m (${floorSafe(metersToFeet(result.mod))}ft)
 EAD: ${result.ead}m (${Math.round(result.ead * 3.28)}ft)
-NDL: ${result.ndl ? `${result.ndl} min` : "It will require DECO"}
+NDL: ${result.ndl ? `${result.ndl} min (${NDL_TABLE_SOURCE})` : "It will require DECO"}
 Best Mix: ${result.bestMix}% (EAN${result.bestMix})
-O2 Toxicity: ${toxicityLabel(result)}
+PO2 at depth: ${result.po2.toFixed(2)} bar (${po2Status(result)})
+${cnsLabel(result)}
 
 Calculated with ean.millibar.io`;
 
@@ -168,7 +175,7 @@ Calculated with ean.millibar.io`;
                   {result.mod} m
                 </div>
                 <div className="text-sm text-blue-500 dark:text-gray-400">
-                  ({Math.round(result.mod * 3.28)} ft)
+                  ({floorSafe(metersToFeet(result.mod))} ft)
                 </div>
               </div>
             </CardContent>
@@ -208,6 +215,9 @@ Calculated with ean.millibar.io`;
                     <div className="text-sm text-amber-500 dark:text-gray-400">
                       at EAD {result.ead}m
                     </div>
+                    <div className="text-xs text-amber-500 dark:text-gray-400 mt-1">
+                      {NDL_TABLE_SOURCE}
+                    </div>
                   </>
                 ) : (
                   <div className="text-xl font-semibold text-red-600 dark:text-red-400">
@@ -239,20 +249,28 @@ Calculated with ean.millibar.io`;
           <Card className="bg-slate-50 dark:bg-white/10 border-slate-200 dark:border-white/20 flex flex-col">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm text-slate-700 dark:text-gray-200">
-                Oxygen Toxicity
+                Oxygen Exposure
               </CardTitle>
             </CardHeader>
             <CardContent className="flex-1 flex items-center justify-center">
-              <div
-                className={`font-semibold ${
-                  result.oxygenToxicity.level === "safe"
-                    ? "text-4xl text-green-600"
-                    : result.oxygenToxicity.level === "caution"
-                    ? "text-xl text-yellow-600"
-                    : "text-4xl text-red-600"
-                }`}
-              >
-                {toxicityLabel(result)}
+              <div className="text-center">
+                <div
+                  className={`text-4xl font-bold ${
+                    result.oxygenToxicity.level === "safe"
+                      ? "text-slate-700 dark:text-gray-200"
+                      : result.oxygenToxicity.level === "caution"
+                      ? "text-yellow-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {result.po2.toFixed(2)} bar
+                </div>
+                <div className="text-sm text-slate-500 dark:text-gray-400">
+                  PO₂ at depth · {po2Status(result)}
+                </div>
+                <div className="text-sm text-slate-500 dark:text-gray-400 mt-1">
+                  {cnsLabel(result)}
+                </div>
               </div>
             </CardContent>
           </Card>
