@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent } from "@/components/ui/card";
+import { FormulaNote, ResultHero } from "@/components/result-hero";
 import { Calculator } from "lucide-react";
 import { calculateBestMixPercent } from "@/lib/ean-calculations";
 
@@ -33,9 +33,9 @@ export function BestMixCalculator() {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-4">
+        <div className="space-y-5">
           <div>
-            <Label htmlFor="depth" className="text-slate-700 dark:text-gray-200">
+            <Label htmlFor="depth">
               Maximum Depth (m)
             </Label>
             <Input
@@ -49,7 +49,7 @@ export function BestMixCalculator() {
             />
           </div>
           <div>
-            <Label htmlFor="po2" className="text-slate-700 dark:text-gray-200">
+            <Label htmlFor="po2">
               Maximum PO₂ (bar)
             </Label>
             <Input
@@ -62,9 +62,9 @@ export function BestMixCalculator() {
               step="0.1"
             />
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Button onClick={calculate} className="flex-1">
-              <Calculator className="w-4 h-4 mr-2 text-green-500 dark:text-white" />
+              <Calculator aria-hidden="true" />
               Calculate Best Mix
             </Button>
             <Button variant="outline" onClick={reset}>
@@ -74,32 +74,21 @@ export function BestMixCalculator() {
         </div>
 
         {result !== null && (
-          <Card className="bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-400/50 flex items-center justify-center">
-            <CardContent className="pt-6">
-              <div className="text-center">
-                <div className="text-5xl font-bold text-green-600 dark:text-green-300 mb-2">
-                  {result}%
-                </div>
-                <div className="text-base text-green-700 dark:text-green-200">
-                  Optimal Oxygen Percentage
-                </div>
-                <div className="text-sm text-green-500 dark:text-green-400 mt-2">
-                  EAN{Math.round(result)}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <ResultHero
+            label="Optimal Oxygen Percentage"
+            value={result}
+            unit="%"
+            detail={`EAN${Math.round(result)}`}
+          />
         )}
       </div>
 
-      <div className="text-sm text-slate-600 dark:text-gray-300 bg-slate-100 dark:bg-white/5 p-4 rounded-lg">
-        <h4 className="font-semibold mb-2 text-slate-800 dark:text-white">Formula:</h4>
-        <p>Best Mix = (Max PO₂ ÷ (Max Depth ÷ 10 + 1)) × 100</p>
-        <p className="mt-2">
-          <strong>Note:</strong> This calculates the richest Nitrox mix that can
+      <FormulaNote formula="Best Mix = (Max PO₂ ÷ (Max Depth ÷ 10 + 1)) × 100">
+        <p>
+          <strong className="text-foreground">Note:</strong> This calculates the richest Nitrox mix that can
           be safely used at your planned maximum depth.
         </p>
-      </div>
+      </FormulaNote>
     </div>
   );
 }

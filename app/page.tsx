@@ -1,161 +1,128 @@
 "use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertTriangle, Calculator } from "lucide-react";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { AlertTriangle } from "lucide-react";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import { MODCalculator } from "@/components/mod-calculator";
 import { BestMixCalculator } from "@/components/best-mix-calculator";
 import { EADCalculator } from "@/components/ead-calculator";
 import { DivePlanner } from "@/components/dive-planner";
 import { Resources } from "@/components/resources";
 
+const SECTIONS = [
+  {
+    value: "mod",
+    tab: "MOD",
+    eyebrow: "Maximum operating depth",
+    title: "How deep can this mix go?",
+    description:
+      "Calculate the maximum safe depth for a given Nitrox mix based on partial pressure limits.",
+    content: <MODCalculator />,
+  },
+  {
+    value: "bestmix",
+    tab: "Best Mix",
+    eyebrow: "Best mix",
+    title: "Which mix suits this depth?",
+    description: "Determine the optimal Nitrox mix for your planned maximum depth.",
+    content: <BestMixCalculator />,
+  },
+  {
+    value: "ead",
+    tab: "EAD",
+    eyebrow: "Equivalent air depth",
+    title: "What depth is this on air?",
+    description:
+      "Calculate the equivalent air depth for decompression planning with Nitrox.",
+    content: <EADCalculator />,
+  },
+  {
+    value: "planner",
+    tab: "Planner",
+    eyebrow: "Dive planner",
+    title: "Plan the whole dive.",
+    description:
+      "Plan your Nitrox dive with comprehensive gas calculations and safety information.",
+    content: <DivePlanner />,
+  },
+  {
+    value: "resources",
+    tab: "Resources",
+    eyebrow: "Resources",
+    title: "Terms, limits and references.",
+    description:
+      "Diving terminology, safety guidelines, and useful references for Nitrox diving.",
+    content: <Resources />,
+  },
+];
+
 export default function NitroxCalculator() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 to-white dark:from-[#111729] dark:to-[#1a1f3a] relative">
-      <div className="absolute top-4 right-4 z-50">
-        <ThemeToggle />
-      </div>
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Calculator className="h-8 w-8 text-blue-600" />
-            <h1 className="text-4xl font-bold text-slate-900 dark:text-white">Nitrox Calculator</h1>
-          </div>
-          <p className="text-lg text-slate-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Enriched Air Nitrox calculator for Nitrox divers and learners.
-            <br />
-            Calculate MOD, Best Mix, EAD, and plan your dives safely.
+    <div id="top" className="min-h-screen">
+      <SiteHeader />
+
+      <main className="mx-auto w-full max-w-5xl px-5 pb-16 md:px-10">
+        <section className="pb-10 pt-9 md:pb-14 md:pt-12">
+          <p className="eyebrow mb-5">Enriched Air Nitrox</p>
+          <h1 className="max-w-2xl text-balance text-[clamp(2.75rem,6vw,4.5rem)] font-semibold leading-[0.98] tracking-[-0.06em]">
+            Nitrox calculator for <span className="text-primary">every dive.</span>
+          </h1>
+          <p className="mt-6 max-w-2xl text-pretty text-lg font-medium leading-relaxed text-foreground/80 md:text-xl">
+            For Nitrox divers and learners. Calculate MOD, Best Mix, EAD, and
+            plan your dives safely.
           </p>
-        </div>
+        </section>
 
         <Tabs defaultValue="mod" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-8 bg-slate-200/50 dark:bg-white/10 backdrop-blur-sm border-slate-300 dark:border-white/20">
-            <TabsTrigger value="mod">MOD</TabsTrigger>
-            <TabsTrigger value="bestmix">Best Mix</TabsTrigger>
-            <TabsTrigger value="ead">EAD</TabsTrigger>
-            <TabsTrigger value="planner">Planner</TabsTrigger>
-            <TabsTrigger value="resources">
-              <span className="sm:hidden">Info</span>
-              <span className="hidden sm:inline">Resources</span>
-            </TabsTrigger>
+          <TabsList>
+            {SECTIONS.map((section) => (
+              <TabsTrigger key={section.value} value={section.value}>
+                {section.tab}
+              </TabsTrigger>
+            ))}
           </TabsList>
 
-          <TabsContent value="mod">
-            <Card className="bg-white dark:bg-white/10 backdrop-blur-sm border-slate-200 dark:border-white/20">
-              <CardHeader>
-                <CardTitle className="text-slate-900 dark:text-gray-200">
-                  Maximum Operating Depth (MOD)
-                </CardTitle>
-                <CardDescription className="text-slate-600 dark:text-gray-300">
-                  Calculate the maximum safe depth for a given Nitrox mix based
-                  on partial pressure limits.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <MODCalculator />
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="bestmix">
-            <Card className="bg-white dark:bg-white/10 backdrop-blur-sm border-slate-200 dark:border-white/20">
-              <CardHeader>
-                <CardTitle className="text-slate-900 dark:text-gray-200">
-                  Best Mix Calculator
-                </CardTitle>
-                <CardDescription className="text-slate-600 dark:text-gray-300">
-                  Determine the optimal Nitrox mix for your planned maximum
-                  depth.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <BestMixCalculator />
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="ead">
-            <Card className="bg-white dark:bg-white/10 backdrop-blur-sm border-slate-200 dark:border-white/20">
-              <CardHeader>
-                <CardTitle className="text-slate-900 dark:text-gray-200">
-                  Equivalent Air Depth (EAD)
-                </CardTitle>
-                <CardDescription className="text-slate-600 dark:text-gray-300">
-                  Calculate the equivalent air depth for decompression planning
-                  with Nitrox.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <EADCalculator />
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="planner">
-            <Card className="bg-white dark:bg-white/10 backdrop-blur-sm border-slate-200 dark:border-white/20">
-              <CardHeader>
-                <CardTitle className="text-slate-900 dark:text-gray-200">Dive Planner</CardTitle>
-                <CardDescription className="text-slate-600 dark:text-gray-300">
-                  Plan your Nitrox dive with comprehensive gas calculations and
-                  safety information.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <DivePlanner />
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="resources">
-            <Card className="bg-white dark:bg-white/10 backdrop-blur-sm border-slate-200 dark:border-white/20">
-              <CardHeader>
-                <CardTitle className="text-slate-900 dark:text-gray-200">
-                  Resources & Information
-                </CardTitle>
-                <CardDescription className="text-slate-600 dark:text-gray-300">
-                  Diving terminology, safety guidelines, and useful references
-                  for Nitrox diving.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Resources />
-              </CardContent>
-            </Card>
-          </TabsContent>
+          {SECTIONS.map((section) => (
+            <TabsContent key={section.value} value={section.value}>
+              <section className="rounded-[1.75rem] border bg-card p-6 md:p-10">
+                <p className="eyebrow">{section.eyebrow}</p>
+                <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] md:text-4xl">
+                  {section.title}
+                </h2>
+                <p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground">
+                  {section.description}
+                </p>
+                <div className="mt-8">{section.content}</div>
+              </section>
+            </TabsContent>
+          ))}
         </Tabs>
 
-        <Alert className="mt-8 border-amber-500 bg-amber-100 dark:bg-amber-900/20">
-          <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-          <AlertDescription className="text-amber-800 dark:text-amber-200">
-            <strong>Warning:</strong> Only certified Nitrox divers should dive
-            with nitrox. If you are learning, use these calculations for
-            training and practice. Always verify calculations independently
-            and follow safe diving practices. The application is provided 'as
-            is' without warranty of any kind. We do not accept any
-            responsibility for inaccuracies, errors, or any consequences that
-            may result from the use of the application.
-          </AlertDescription>
-        </Alert>
-        <div className="flex flex-col items-center justify-center">
-          <p className="mt-4 text-slate-600 dark:text-gray-200">
-            <a href="https://app.millibar.io/">Home</a> |{" "}
-            <a href="https://app.millibar.io/terms">Terms</a> |{" "}
-            <a href="https://app.millibar.io/privacy">Privacy</a> |{" "}
-            <a href="https://app.millibar.io/security">Security</a> |{" "}
-            <a href="https://app.millibar.io/imprint">Imprint</a>{" "}
+        <aside
+          aria-labelledby="safety-heading"
+          className="mt-10 rounded-[1.75rem] border-2 border-amber-500 bg-amber-50 p-6 text-amber-950 dark:border-amber-400/70 dark:bg-amber-950/40 dark:text-amber-100 md:p-8"
+        >
+          <div className="flex items-center gap-3">
+            <AlertTriangle className="h-6 w-6 shrink-0 text-amber-600 dark:text-amber-400" aria-hidden="true" />
+            <h2 id="safety-heading" className="text-xl font-semibold tracking-[-0.02em]">
+              Safety warning
+            </h2>
+          </div>
+          <p className="mt-4 max-w-3xl text-base leading-relaxed">
+            Only certified Nitrox divers should dive with nitrox. If you are
+            learning, use these calculations for training and practice. Always
+            verify calculations independently and follow safe diving practices.
           </p>
-          <p className="mt-4 text-slate-600 dark:text-gray-200">
-            {new Date().getFullYear()} © Millibar - All Rights Reserved
+          <p className="mt-3 max-w-3xl text-sm leading-relaxed opacity-80">
+            The application is provided &apos;as is&apos; without warranty of
+            any kind. We do not accept any responsibility for inaccuracies,
+            errors, or any consequences that may result from the use of the
+            application.
           </p>
-        </div>
-      </div>
+        </aside>
+      </main>
+
+      <SiteFooter />
     </div>
   );
 }

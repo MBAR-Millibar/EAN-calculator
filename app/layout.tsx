@@ -1,8 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ConsentBanner } from "@/components/consent-banner";
 import { ThemeProvider } from "@/components/theme-provider";
+
+const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 
 export const metadata: Metadata = {
   title: "EAN Calculator",
@@ -54,7 +58,7 @@ export const metadata: Metadata = {
   classification: "Diving Calculator",
   other: {
     "apple-mobile-web-app-capable": "yes",
-    "apple-mobile-web-app-status-bar-style": "black-translucent",
+    "apple-mobile-web-app-status-bar-style": "default",
     "apple-mobile-web-app-title": "Nitrox Calculator",
   },
 };
@@ -62,7 +66,10 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#111729",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#e8f5fc" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a1a22" },
+  ],
 };
 
 export default function RootLayout({
@@ -99,7 +106,11 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-G4JT0N0VW9"
@@ -123,16 +134,16 @@ export default function RootLayout({
         />
       </head>
       <body>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-            <ConsentBanner />
-          </ThemeProvider>
-        </body>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <ConsentBanner />
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
