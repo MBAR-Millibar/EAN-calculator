@@ -29,7 +29,7 @@ export default function NitroxCalculator() {
             <h1 className="text-4xl font-bold text-slate-900 dark:text-white">Nitrox Calculator</h1>
           </div>
           <p className="text-lg text-slate-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Enriched Air Nitrox calculator for certified Nitrox divers planning.
+            Enriched Air Nitrox calculator for Nitrox divers and learners.
             <br />
             Calculate MOD, Best Mix, EAD, and plan your dives safely.
           </p>
@@ -134,8 +134,9 @@ export default function NitroxCalculator() {
         <Alert className="mt-8 border-amber-500 bg-amber-100 dark:bg-amber-900/20">
           <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
           <AlertDescription className="text-amber-800 dark:text-amber-200">
-            <strong>Warning:</strong> These calculations should only be used by
-            certified Nitrox divers. Always verify calculations independently
+            <strong>Warning:</strong> Only certified Nitrox divers should dive
+            with nitrox. If you are learning, use these calculations for
+            training and practice. Always verify calculations independently
             and follow safe diving practices. The application is provided 'as
             is' without warranty of any kind. We do not accept any
             responsibility for inaccuracies, errors, or any consequences that

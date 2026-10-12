@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calculator } from "lucide-react";
-import { calculateBestMix } from "@/lib/ean-calculations";
+import { calculateBestMixPercent } from "@/lib/ean-calculations";
 
 export function BestMixCalculator() {
   const [maxDepth, setMaxDepth] = useState("30");
@@ -17,7 +17,7 @@ export function BestMixCalculator() {
     const depth = parseFloat(maxDepth);
     const po2 = parseFloat(maxPO2);
     if (isNaN(depth) || isNaN(po2)) return;
-    setResult(Math.ceil(calculateBestMix(depth, po2)));
+    setResult(calculateBestMixPercent(depth, po2));
   };
 
   useEffect(() => {
