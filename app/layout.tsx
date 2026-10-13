@@ -4,6 +4,8 @@ import "./globals.css";
 import { Analytics } from "@/components/analytics";
 import { ConsentBanner } from "@/components/consent-banner";
 import { ThemeProvider } from "@/components/theme-provider";
+import { NativeShell } from "@/components/native-shell";
+import { IS_MOBILE_APP } from "@/lib/platform";
 
 const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
@@ -68,6 +70,9 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  // Draw under the notch and home indicator in the app; .native-app pads
+  // the body by the safe-area insets instead (globals.css).
+  ...(IS_MOBILE_APP && { viewportFit: "cover" as const }),
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#e8f5fc" },
     { media: "(prefers-color-scheme: dark)", color: "#0a1a22" },
@@ -110,7 +115,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable}`}
+      className={`${geistSans.variable} ${geistMono.variable}${IS_MOBILE_APP ? " native-app" : ""}`}
       suppressHydrationWarning
     >
       <head>
@@ -125,13 +130,19 @@ export default function RootLayout({
       <body>
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme={IS_MOBILE_APP ? "system" : "light"}
           enableSystem
           disableTransitionOnChange
         >
           {children}
-          <ConsentBanner />
-          <Analytics />
+          {IS_MOBILE_APP ? (
+            <NativeShell />
+          ) : (
+            <>
+              <ConsentBanner />
+              <Analytics />
+            </>
+          )}
         </ThemeProvider>
       </body>
     </html>

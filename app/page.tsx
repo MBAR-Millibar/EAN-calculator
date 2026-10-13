@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertTriangle } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
@@ -8,6 +9,8 @@ import { BestMixCalculator } from "@/components/best-mix-calculator";
 import { EADCalculator } from "@/components/ead-calculator";
 import { DivePlanner } from "@/components/dive-planner";
 import { Resources } from "@/components/resources";
+import { AppInfo } from "@/components/app-info";
+import { IS_MOBILE_APP } from "@/lib/platform";
 
 const SECTIONS = [
   {
@@ -54,9 +57,23 @@ const SECTIONS = [
       "Diving terminology, safety guidelines, and useful references for Nitrox diving.",
     content: <Resources />,
   },
+  ...(IS_MOBILE_APP
+    ? [
+        {
+          value: "info",
+          tab: "Info",
+          eyebrow: "Info",
+          title: "About this app.",
+          description: "Who this app is for, its limits, and where to get help.",
+          content: <AppInfo />,
+        },
+      ]
+    : []),
 ];
 
 export default function NitroxCalculator() {
+  const [tab, setTab] = useState("mod");
+
   return (
     <div id="top" className="min-h-screen">
       <SiteHeader />
@@ -73,10 +90,20 @@ export default function NitroxCalculator() {
           </p>
         </section>
 
-        <Tabs defaultValue="mod" className="w-full">
-          <TabsList>
+        <Tabs value={tab} onValueChange={setTab} activationMode="manual" className="w-full">
+          {/* Phones: tighter tabs so all six fit without scrolling */}
+          <TabsList className="gap-0.5 sm:gap-1">
             {SECTIONS.map((section) => (
-              <TabsTrigger key={section.value} value={section.value}>
+              <TabsTrigger
+                key={section.value}
+                value={section.value}
+                // Radix selects on mousedown, so swiping the scrollable tab
+                // bar on Android switched tabs. Select on click instead,
+                // which the browser skips when the touch was a scroll.
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => setTab(section.value)}
+                className="px-2 text-[13px] sm:px-4 sm:text-sm"
+              >
                 {section.tab}
               </TabsTrigger>
             ))}
@@ -84,9 +111,10 @@ export default function NitroxCalculator() {
 
           {SECTIONS.map((section) => (
             <TabsContent key={section.value} value={section.value}>
-              <section className="rounded-[1.75rem] border bg-card p-6 md:p-10">
+              <section className="rounded-[1.75rem] border bg-card p-5 sm:p-6 md:p-10">
                 <p className="eyebrow">{section.eyebrow}</p>
-                <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] md:text-4xl">
+                {/* Scales with the viewport so each title fits on one line on phones */}
+                <h2 className="mt-3 text-[clamp(1.25rem,6vw,1.875rem)] font-semibold tracking-[-0.04em] md:text-4xl">
                   {section.title}
                 </h2>
                 <p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground">

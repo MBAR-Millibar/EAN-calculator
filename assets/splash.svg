@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2732" height="2732" viewBox="0 0 2732 2732">
+  <rect width="2732" height="2732" fill="#0072a5"/>
+  <circle cx="1366" cy="1236" r="190" fill="none" stroke="#f9fcff" stroke-width="34"/>
+  <g font-family="Helvetica Neue, Helvetica, Arial, sans-serif" text-anchor="middle">
+    <text x="1366" y="1610" font-size="116" font-weight="600" letter-spacing="-3" fill="#f9fcff">Millibar Nitrox</text>
+    <text x="1366" y="1710" font-size="60" font-weight="400" fill="#cfe6f2">by Millibar.io</text>
+  </g>
+</svg>
