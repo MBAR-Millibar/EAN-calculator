@@ -4,6 +4,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ConsentBanner } from "@/components/consent-banner";
 import { ThemeProvider } from "@/components/theme-provider";
+import { NativeShell } from "@/components/native-shell";
+import { IS_MOBILE_APP } from "@/lib/platform";
 
 const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
@@ -66,6 +68,9 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  // Draw under the notch and home indicator in the app; .native-app pads
+  // the body by the safe-area insets instead (globals.css).
+  ...(IS_MOBILE_APP && { viewportFit: "cover" as const }),
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#e8f5fc" },
     { media: "(prefers-color-scheme: dark)", color: "#0a1a22" },
@@ -108,22 +113,27 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable}`}
+      className={`${geistSans.variable} ${geistMono.variable}${IS_MOBILE_APP ? " native-app" : ""}`}
       suppressHydrationWarning
     >
       <head>
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-G4JT0N0VW9"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-G4JT0N0VW9');
-          `}
-        </Script>
+        {/* No analytics in the mobile app: it collects no data and works offline. */}
+        {!IS_MOBILE_APP && (
+          <>
+            <Script
+              src="https://www.googletagmanager.com/gtag/js?id=G-G4JT0N0VW9"
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-G4JT0N0VW9');
+              `}
+            </Script>
+          </>
+        )}
         <link rel="canonical" href="https://ean.millibar.io" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
@@ -136,12 +146,12 @@ export default function RootLayout({
       <body>
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme={IS_MOBILE_APP ? "system" : "light"}
           enableSystem
           disableTransitionOnChange
         >
           {children}
-          <ConsentBanner />
+          {IS_MOBILE_APP ? <NativeShell /> : <ConsentBanner />}
         </ThemeProvider>
       </body>
     </html>
