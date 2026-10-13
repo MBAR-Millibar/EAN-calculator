@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 export function SiteHeader() {
@@ -22,7 +23,7 @@ export function SiteHeader() {
           href="https://millibar.io"
           className="inline-flex min-h-10 items-center justify-center rounded-full border border-foreground/15 px-4 text-sm font-semibold transition hover:bg-foreground hover:text-background focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
         >
-          millibar.io <span className="ml-2" aria-hidden="true">↗</span>
+          millibar.io <ArrowUpRight className="ml-1.5 h-4 w-4" aria-hidden="true" />
         </a>
       </nav>
     </header>

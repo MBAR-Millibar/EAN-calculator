@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "lucide-react";
 import { DISCLAIMER } from "@/lib/disclaimer";
 
 const LINKS = [
@@ -21,8 +22,8 @@ export function AppInfo() {
       <ul className="space-y-2">
         {LINKS.map((link) => (
           <li key={link.href}>
-            <a href={link.href} className="font-semibold text-primary underline-offset-4 hover:underline">
-              {link.label} ↗
+            <a href={link.href} className="inline-flex items-center gap-1 font-semibold text-primary underline-offset-4 hover:underline">
+              {link.label} <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
             </a>
           </li>
         ))}
