@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@/components/analytics";
 import { ConsentBanner } from "@/components/consent-banner";
 import { ThemeProvider } from "@/components/theme-provider";
 
@@ -9,6 +9,8 @@ const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://ean.millibar.io"),
+  alternates: { canonical: "/" },
   title: "EAN Calculator",
   description:
     "Enriched Air Nitrox calculator for nitrox divers and learners. Calculate MOD, Best Mix, EAD, and plan your dives safely with comprehensive gas calculations.",
@@ -89,7 +91,7 @@ export default function RootLayout({
     author: {
       "@type": "Organization",
       name: "Millibar",
-      url: "https://app.millibar.io",
+      url: "https://millibar.io",
     },
     offers: {
       "@type": "Offer",
@@ -112,19 +114,6 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-G4JT0N0VW9"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-G4JT0N0VW9');
-          `}
-        </Script>
-        <link rel="canonical" href="https://ean.millibar.io" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -142,6 +131,7 @@ export default function RootLayout({
         >
           {children}
           <ConsentBanner />
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>
