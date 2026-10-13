@@ -25,3 +25,12 @@
     @apply font-mono text-xs font-medium uppercase tracking-[0.2em] text-primary;
   }
 }
+
+/* Mobile app: the WebView spans the whole screen (viewport-fit=cover), so
+   keep content clear of the notch, status bar and home indicator. */
+.native-app body {
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Calculator, AlertTriangle, Share2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { hapticTap } from "@/lib/platform";
 import {
   calculateDivePlan,
   DivePlanResult,
@@ -202,7 +203,13 @@ Calculated with ean.millibar.io`;
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <Button onClick={calculate} className="flex-1">
+        <Button
+          onClick={() => {
+            calculate();
+            hapticTap();
+          }}
+          className="flex-1"
+        >
           <Calculator aria-hidden="true" />
           Plan Dive
         </Button>

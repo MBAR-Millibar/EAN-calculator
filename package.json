@@ -7,9 +7,19 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "node --test lib/*.test.ts"
+    "test": "node --test lib/*.test.ts",
+    "build:mobile": "BUILD_TARGET=mobile next build",
+    "cap:sync": "pnpm build:mobile && cap sync",
+    "cap:ios": "pnpm cap:sync && cap open ios",
+    "cap:android": "pnpm cap:sync && cap open android",
+    "cap:assets": "capacitor-assets generate --ios --android --iconBackgroundColor \"#0072a5\" --iconBackgroundColorDark \"#0072a5\" --splashBackgroundColor \"#0072a5\" --splashBackgroundColorDark \"#0a1a22\""
   },
   "dependencies": {
+    "@capacitor/android": "^8.2.0",
+    "@capacitor/core": "^8.2.0",
+    "@capacitor/haptics": "^8.0.1",
+    "@capacitor/ios": "^8.2.0",
+    "@capacitor/splash-screen": "^8.0.1",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-accordion": "1.2.2",
     "@radix-ui/react-alert-dialog": "1.1.4",
@@ -61,6 +71,8 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^8.2.0",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",

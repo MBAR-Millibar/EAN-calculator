@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Millibar Nitrox</string>
+    <string name="title_activity_main">Millibar Nitrox</string>
+    <string name="package_name">io.millibar.nitrox</string>
+    <string name="custom_url_scheme">io.millibar.nitrox</string>
+</resources>

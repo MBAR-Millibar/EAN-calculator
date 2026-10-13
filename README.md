@@ -99,6 +99,19 @@ pnpm start    # Start production server
 pnpm lint     # Run ESLint
 ```
 
+## 📱 Mobile App (iOS and Android)
+
+**Millibar Nitrox** (`io.millibar.nitrox`) is built from this codebase with [Capacitor](https://capacitorjs.com/). `BUILD_TARGET=mobile` makes Next.js write a static export to `out/`, which is bundled into the app, so every calculation runs on the device and works offline. The mobile build has no analytics and no cookie banner. Instead it shows a disclaimer on first launch and adds an Info tab. Check for the app with `IS_MOBILE_APP` from `lib/platform.ts`.
+
+```bash
+pnpm cap:sync      # build:mobile + copy out/ into ios/ and android/
+pnpm cap:ios       # sync and open Xcode
+pnpm cap:android   # sync and open Android Studio (needs JDK 21)
+pnpm cap:assets    # regenerate icons and splash screens from assets/
+```
+
+Icon and splash sources live in `assets/` (SVG plus the rendered PNGs that `cap:assets` reads).
+
 ## ⚠️ Safety Notice
 
 **Important**: Only **certified Nitrox divers** should dive with nitrox. Learners can use this calculator for training and practice.
