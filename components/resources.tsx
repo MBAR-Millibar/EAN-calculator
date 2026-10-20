@@ -13,7 +13,7 @@ export function Resources() {
       definition:
         "Maximum Operating Depth - The deepest depth at which a gas mix can be safely used",
       color:
-        "bg-blue-100 text-blue-700 border-blue-300 dark:bg-blue-900/50 dark:text-blue-300 dark:border-blue-400/50",
+        "bg-ocean-100 text-ocean-700 border-ocean-300 dark:bg-navy-700/50 dark:text-ocean-300 dark:border-ocean-400/50",
     },
     {
       term: "EAD",
