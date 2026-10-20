@@ -28,9 +28,9 @@ function cnsLabel(result: DivePlanResult): string {
 
 const PALETTE = {
   blue: {
-    card: "border-blue-200 bg-blue-50 dark:border-blue-400/40 dark:bg-blue-900/30",
-    title: "text-blue-800 dark:text-blue-300",
-    value: "text-blue-600 dark:text-blue-300",
+    card: "border-ocean-200 bg-ocean-50 dark:border-ocean-400/40 dark:bg-navy-700/30",
+    title: "text-ocean-800 dark:text-ocean-300",
+    value: "text-ocean-600 dark:text-ocean-300",
   },
   purple: {
     card: "border-purple-200 bg-purple-50 dark:border-purple-400/40 dark:bg-purple-900/30",
