@@ -12,8 +12,8 @@ importers:
         specifier: ^3.9.1
         version: 3.9.1(react-hook-form@7.54.1(react@19.0.0))
       '@millibar/tokens':
-        specifier: github:MBAR-Millibar/millibar-tokens#v1.0.0
-        version: https://codeload.github.com/MBAR-Millibar/millibar-tokens/tar.gz/e7084e02e81abca0e870d1d8193e67a626133713
+        specifier: https://github.com/MBAR-Millibar/millibar-tokens/archive/refs/tags/v1.0.0.tar.gz
+        version: https://github.com/MBAR-Millibar/millibar-tokens/archive/refs/tags/v1.0.0.tar.gz
       '@radix-ui/react-accordion':
         specifier: 1.2.2
         version: 1.2.2(@types/react-dom@19.0.0)(@types/react@19.0.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -350,8 +350,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@millibar/tokens@https://codeload.github.com/MBAR-Millibar/millibar-tokens/tar.gz/e7084e02e81abca0e870d1d8193e67a626133713':
-    resolution: {gitHosted: true, integrity: sha512-gHU1g8teWVASAOBny7tDlmDu9zXbjBqySYstmjC7+ucTtY0JMKBRHfP9C7U9Ot0GVpJwh/nUpW+QcxG2+pdA+A==, tarball: https://codeload.github.com/MBAR-Millibar/millibar-tokens/tar.gz/e7084e02e81abca0e870d1d8193e67a626133713}
+  '@millibar/tokens@https://github.com/MBAR-Millibar/millibar-tokens/archive/refs/tags/v1.0.0.tar.gz':
+    resolution: {integrity: sha512-1Jl+DCjMAPHe2x01+jxeCnvIiw1hxEIyrufa5Dx0gludRSgbhcusq9PAXbvoTy9eXjCmVsuAHT60mrENTQPG+A==, tarball: https://github.com/MBAR-Millibar/millibar-tokens/archive/refs/tags/v1.0.0.tar.gz}
     version: 1.0.0
 
   '@next/env@15.2.8':
@@ -2140,7 +2140,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@millibar/tokens@https://codeload.github.com/MBAR-Millibar/millibar-tokens/tar.gz/e7084e02e81abca0e870d1d8193e67a626133713': {}
+  '@millibar/tokens@https://github.com/MBAR-Millibar/millibar-tokens/archive/refs/tags/v1.0.0.tar.gz': {}
 
   '@next/env@15.2.8': {}
 
