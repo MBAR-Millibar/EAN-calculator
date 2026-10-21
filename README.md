@@ -35,6 +35,43 @@ An educational **Enriched Air Nitrox (EAN) calculator** designed for learners & 
 
 All formulas live in `lib/ean-calculations.ts` — a pure TypeScript module with zero framework dependencies. It can be used independently in native mobile apps or distributed as an npm package. See the module for exported functions and types.
 
+### 🔌 Calculation API
+
+A JSON API for Millibar users, used by the EAN widget on [app.millibar.io](https://app.millibar.io). It returns the same figures as the website, rounded the same way: MOD and best mix are rounded down.
+
+**Authentication.** Every request needs a Millibar access token (Laravel Passport, see `docs/API_AUTH.md` in the millibar repo):
+
+```
+Authorization: Bearer <millibar access token>
+```
+
+The API checks each token against `GET {MILLIBAR_API_URL}/api/v1/user` and caches a valid result for 60 s. Only a SHA-256 hash of the token is kept, never the raw token.
+
+**Endpoints.** All are `GET`. Depths are in metres, O₂ in percent, PO₂ in bar.
+
+| Endpoint | Query params | `result` |
+| --- | --- | --- |
+| `/api/v1/mod` | `o2`, `maxPO2` | `mod` (m, rounded down), `modUnrounded`, `modFeet` |
+| `/api/v1/best-mix` | `depth`, `maxPO2` | `bestMix` (%, rounded down), `bestMixUnrounded` |
+| `/api/v1/ead` | `depth`, `o2` | `ead` (unrounded), `eadRoundedUp` |
+| `/api/v1/dive-plan` | `depth`, `o2`, `maxPO2` | `mod`, `ead`, `bestMix`, `po2`, `oxygenToxicity`, `ndl`, `cnsAtNDL`, `ndlSource` |
+
+Accepted ranges: `o2` 21–100, `maxPO2` 1.0–1.6, `depth` 0–60.
+
+```bash
+curl -H "Authorization: Bearer $TOKEN" \
+  "https://ean.millibar.io/api/v1/dive-plan?depth=30&o2=32&maxPO2=1.4"
+# {"input":{...},"result":{"mod":33,"ead":24.43,"bestMix":35,"po2":1.28,...},"disclaimer":"..."}
+```
+
+| Status | `error` | Meaning |
+| --- | --- | --- |
+| `400` | `validation_failed` | The response lists `issues` as `[{ field, message }]` |
+| `401` | `unauthenticated` | The token is missing, invalid or revoked |
+| `503` | `auth_unavailable` | Millibar couldn't be reached to verify the token. The API fails closed. |
+
+**Configuration.** `MILLIBAR_API_URL` sets the Millibar instance tokens are checked against. It defaults to `https://app.millibar.io`; set it in `.env.local` or Vercel to point at a local or staging instance.
+
 ## 🚀 Technology Stack
 
 - **Framework**: [Next.js 15.2.4](https://nextjs.org/) with App Router
@@ -50,6 +87,7 @@ All formulas live in `lib/ean-calculations.ts` — a pure TypeScript module with
 
 ```
 ├── app/                    # Next.js App Router (layout, page, sitemap)
+│   └── api/v1/             # Calculation API route handlers
 ├── components/
 │   ├── ui/                 # Radix-based primitive components
 │   ├── mod-calculator.tsx
@@ -59,6 +97,7 @@ All formulas live in `lib/ean-calculations.ts` — a pure TypeScript module with
 │   └── resources.tsx
 ├── lib/
 │   ├── ean-calculations.ts # Pure TS calculations library (framework-free)
+│   ├── api/                # API auth (Millibar token), param schemas, handler
 │   └── utils.ts            # Tailwind class merge utility
 └── public/                 # Static assets (OG image, favicon, robots.txt)
 ```
@@ -97,6 +136,7 @@ pnpm dev      # Start development server
 pnpm build    # Build for production
 pnpm start    # Start production server
 pnpm lint     # Run ESLint
+pnpm test     # Run calculation and API tests
 ```
 
 ## ⚠️ Safety Notice
