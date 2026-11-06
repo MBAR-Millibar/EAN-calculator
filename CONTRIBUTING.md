@@ -24,7 +24,7 @@ Calculation errors in a diving app can have real safety consequences — these P
 
 1. Fork the repo and create a branch (`feat/…` or `fix/…`).
 2. Run `pnpm dev` to verify your changes work in the browser.
-3. Run `pnpm lint` and `pnpm build` — both must pass.
+3. Run `pnpm typecheck`, `pnpm test` and `pnpm build` — all must pass. CI runs the same checks on every pull request.
 4. Open a PR against `main` with a clear description. Include screenshots for UI changes.
 
 ## Commit convention
@@ -42,7 +42,7 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/):
 
 ## Reporting bugs
 
-Open an issue at [github.com/LeandroBerlin/ean-calc/issues](https://github.com/LeandroBerlin/ean-calc/issues). Include browser/OS, steps to reproduce, and — for calculation bugs — the inputs and the expected vs. actual result.
+Open an issue at [github.com/MBAR-Millibar/EAN-calculator/issues](https://github.com/MBAR-Millibar/EAN-calculator/issues). Include browser/OS, steps to reproduce, and — for calculation bugs — the inputs and the expected vs. actual result.
 
 ## Safety disclaimer
 
