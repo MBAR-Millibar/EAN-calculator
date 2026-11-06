@@ -24,3 +24,5 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
+      # Static export bundled into the iOS and Android apps (MOB-1)
+      - run: pnpm build:mobile
