@@ -1,6 +1,6 @@
 # EAN Calculator 🤿
 
-[![Next.js](https://img.shields.io/badge/Next.js-15.2.4-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-15.5-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4.17-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 [![Deployed on Vercel](https://img.shields.io/badge/Deployment-Vercel-black?style=for-the-badge&logo=vercel)](https://ean.millibar.io/)
@@ -74,12 +74,12 @@ curl -H "Authorization: Bearer $TOKEN" \
 
 ## 🚀 Technology Stack
 
-- **Framework**: [Next.js 15.2.4](https://nextjs.org/) with App Router
+- **Framework**: [Next.js 15.5](https://nextjs.org/) with App Router
 - **Language**: [TypeScript 5](https://www.typescriptlang.org/)
 - **Styling**: [Tailwind CSS 3.4.17](https://tailwindcss.com/)
 - **UI Components**: [Radix UI](https://www.radix-ui.com/) primitives
 - **Icons**: [Lucide React](https://lucide.dev/)
-- **Form Handling**: [React Hook Form](https://react-hook-form.com/) with [Zod](https://zod.dev/)
+- **Validation**: [Zod](https://zod.dev/) (API query params)
 - **Package Manager**: [pnpm](https://pnpm.io/)
 - **Deployment**: [Vercel](https://vercel.com/)
 
@@ -105,15 +105,15 @@ curl -H "Authorization: Bearer $TOKEN" \
 ## 🛠️ Development
 
 ### Prerequisites
-- Node.js 18+ 
+- Node.js 22.18+ (the tests run TypeScript directly)
 - pnpm (recommended) or npm
 
 ### Getting Started
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/LeandroBerlin/ean-calc.git
-   cd ean-calc
+   git clone https://github.com/MBAR-Millibar/EAN-calculator.git
+   cd EAN-calculator
    ```
 
 2. **Install dependencies**
@@ -132,11 +132,11 @@ curl -H "Authorization: Bearer $TOKEN" \
 ### Available Scripts
 
 ```bash
-pnpm dev      # Start development server
-pnpm build    # Build for production
-pnpm start    # Start production server
-pnpm lint     # Run ESLint
-pnpm test     # Run calculation and API tests
+pnpm dev        # Start development server
+pnpm build      # Build for production
+pnpm start      # Start production server
+pnpm typecheck  # Type-check with tsc
+pnpm test       # Run calculation and API tests
 ```
 
 ## ⚠️ Safety Notice
