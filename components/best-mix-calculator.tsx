@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { FormulaNote, ResultHero } from "@/components/result-hero";
 import { Calculator } from "lucide-react";
 import { calculateBestMixPercent } from "@/lib/ean-calculations";
+import { hapticTap } from "@/lib/platform";
 
 export function BestMixCalculator() {
   const [maxDepth, setMaxDepth] = useState("30");
@@ -63,7 +64,13 @@ export function BestMixCalculator() {
             />
           </div>
           <div className="flex flex-wrap gap-2">
-            <Button onClick={calculate} className="flex-1">
+            <Button
+              onClick={() => {
+                calculate();
+                hapticTap();
+              }}
+              className="flex-1"
+            >
               <Calculator aria-hidden="true" />
               Calculate Best Mix
             </Button>
