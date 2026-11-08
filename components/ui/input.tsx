@@ -7,6 +7,8 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
     return (
       <input
         type={type}
+        // Decimal keypad on phones instead of the full keyboard
+        inputMode={type === "number" ? "decimal" : undefined}
         onFocus={(e) => {
           e.target.select();
           onFocus?.(e);
