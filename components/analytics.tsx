@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Script from "next/script";
 import { CONSENT_EVENT, readConsent, type Consent } from "@/lib/consent";
 
-const GA_ID = "G-G4JT0N0VW9";
+const GA_ID = "G-Y0V9Z9XVY2";
 
 /** Loads Google Analytics only after the visitor accepts the consent banner. */
 export function Analytics() {
